@@ -1,27 +1,47 @@
-"use client";
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import "./globals.css";
+import { LanguageProvider } from "@/context/LanguageContext";
+import LanguageSelector from "@/components/LanguageSelector";
 
-import { Inter } from "next/font/google";
-import { ThemeProvider } from "@/lib/theme-context";
-import { LanguageProvider } from "@/lib/language-context";
-import { UserProvider } from "@/lib/user-context";
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
 
-const inter = Inter({ subsets: ["latin"] });
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "PortfoyPro",
+  description: "Finansal portföy yönetim uygulaması",
+};
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <html lang="tr" className="dark:bg-gray-900 bg-white">
-      <body className={inter.className}>
-        <ThemeProvider >
-          <LanguageProvider>
-            <UserProvider>{children}</UserProvider>
-          </LanguageProvider>
-        </ThemeProvider>
-      </body>
-    </html>
-  );
+   return (
+     <html lang="tr" suppressHydrationWarning>
+       <body
+         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+       >
+         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+           <LanguageProvider>
+             <div className="fixed top-4 right-4 z-50 flex gap-2 items-center">
+               <ThemeToggle />
+              
+                <LanguageSelector />
+             </div>
+             {children}
+           </LanguageProvider>
+         </ThemeProvider>
+       </body>
+     </html>
+   );
 }
