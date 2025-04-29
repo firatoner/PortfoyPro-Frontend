@@ -1,22 +1,13 @@
 "use client";
 
-import {
-
-
-  ChevronsUpDown,
-
- 
-  LogOut,
-
-} from "lucide-react";
+import { ChevronsUpDown, LogOut } from "lucide-react";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
+
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
+
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -27,17 +18,16 @@ import {
 } from "@/components/ui/sidebar";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { useUser } from "@supabase/auth-helpers-react";
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-}) {
+export function NavUser() {
   const { isMobile } = useSidebar();
+  const user = useUser();
+
+  if (!user) return null;
+
+  const name = user.email?.split("@")[0]; 
+  const email = user.email;
 
   return (
     <SidebarMenu>
@@ -49,8 +39,8 @@ export function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+                <span className="truncate font-medium">{name}</span>
+                <span className="truncate text-xs">{email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -61,23 +51,12 @@ export function NavUser({
             align="end"
             sideOffset={4}
           >
-            <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
-                </div>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup></DropdownMenuGroup>
-            <DropdownMenuSeparator />
-
-            <DropdownMenuSeparator />
             <DropdownMenuItem>
               <LogOut />
-              <Button>
-                <Link href="/">Log Out</Link>
+              <Button variant="ghost">
+                <Link href="/">
+                  Log Out
+                </Link>
               </Button>
             </DropdownMenuItem>
           </DropdownMenuContent>

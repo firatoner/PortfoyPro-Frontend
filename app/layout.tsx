@@ -5,6 +5,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import "./globals.css";
 import { LanguageProvider } from "@/context/LanguageContext";
 import LanguageSelector from "@/components/LanguageSelector";
+import { SupabaseProvider } from "@/components/supabase-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,10 +36,10 @@ export default function RootLayout({
            <LanguageProvider>
              <div className="fixed top-4 right-4 z-50 flex gap-2 items-center">
                <ThemeToggle />
-              
-                <LanguageSelector />
+
+               <LanguageSelector />
              </div>
-             {children}
+             <SupabaseProvider>{children}</SupabaseProvider>
            </LanguageProvider>
          </ThemeProvider>
        </body>

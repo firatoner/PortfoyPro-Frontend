@@ -31,7 +31,7 @@ export default function LoginForm() {
     e.preventDefault();
     setError("");
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -40,7 +40,8 @@ export default function LoginForm() {
       setError(`${t.loginFailed}: ${error.message}`);
       return;
     }
-
+    const accessToken = data.session?.access_token;
+    console.log("🔐 Access Token:", accessToken);
     router.push("/dashboard");
   };
 

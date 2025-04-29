@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
-import { useRouter } from "next/navigation";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,7 +19,6 @@ import { content } from "@/context/language-content";
 export default function PasswordResetPage() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const router = useRouter();
 
   const { language } = useLanguage();
   const t = content[language];
@@ -39,8 +38,8 @@ export default function PasswordResetPage() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
-      <Card className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-[600px] shadow-lg border border-gray-200 dark:border-gray-700 p-6 sm:p-10 rounded-xl bg-white dark:bg-gray-900">
+    <main className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-black px-4">
+      <Card className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-[600px] shadow-lg border border-gray-200 dark:border-white p-6 sm:p-10 rounded-xl bg-white dark:bg-black ">
         <CardHeader className="text-center space-y-2">
           <CardTitle className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white">
             {t.resetPassword}

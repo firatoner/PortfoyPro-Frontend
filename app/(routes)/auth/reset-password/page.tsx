@@ -1,6 +1,6 @@
 "use client";
 
-import {  useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import { useLanguage } from "@/context/LanguageContext";
@@ -47,8 +47,8 @@ export default function ResetPasswordPage() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 px-4">
-      <Card className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-[600px] shadow-lg border border-gray-200 dark:border-gray-700 p-6 sm:p-10 rounded-xl bg-white dark:bg-gray-900">
+    <main className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-black px-4">
+      <Card className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-[600px] shadow-lg border border-black dark:border-white p-6 sm:p-10 rounded-xl bg-white dark:bg-black">
         <CardHeader className="text-center space-y-2">
           <CardTitle className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white">
             {t.resetPassword}
