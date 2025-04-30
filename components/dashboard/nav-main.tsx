@@ -1,5 +1,5 @@
 "use client";
-import { MdOutlineDashboard } from "react-icons/md";
+
 import { Settings2 } from "lucide-react";
 import { CgProfile } from "react-icons/cg";
 import {
@@ -19,9 +19,10 @@ export function NavMain() {
       <SidebarGroupLabel>
         <SidebarMenuButton asChild>
           <a href="dashboard">
-            <div className="flex items-center gap-2 mb-6">
-              <MdOutlineDashboard />
-              <span>DASHBOARD</span>
+            <div className="flex items-center gap-2 m-6">
+              {/* <LayoutDashboard size={18} /> */}
+              <h6>DASHBOARD</h6>
+              {/* <LayoutDashboard size={18} /> */}
             </div>
           </a>
         </SidebarMenuButton>
@@ -37,10 +38,10 @@ export function NavMain() {
             </a>
           </SidebarMenuButton>
           <SidebarMenuButton asChild>
-            <a href="buy-sell">
+            <a href="Buy-Sell">
               <div className="flex items-center gap-2">
                 <AiOutlineTransaction />
-                <span>Buy - Sell</span>
+                <span>Buy-Sell</span>
               </div>
             </a>
           </SidebarMenuButton>

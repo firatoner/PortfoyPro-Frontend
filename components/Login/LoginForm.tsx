@@ -31,17 +31,21 @@ export default function LoginForm() {
     e.preventDefault();
     setError("");
 
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
+    console.log(session?.access_token);
+    console.log(session?.refresh_token);
 
     if (error) {
       setError(`${t.loginFailed}: ${error.message}`);
       return;
     }
-    const accessToken = data.session?.access_token;
-    console.log("🔐 Access Token:", accessToken);
+
     router.push("/dashboard");
   };
 

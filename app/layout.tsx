@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { ThemeProvider } from "@/components/important/theme-provider";
+import { ThemeToggle } from "@/components/important/ThemeToggle";
 import "./globals.css";
 import { LanguageProvider } from "@/context/LanguageContext";
-import LanguageSelector from "@/components/LanguageSelector";
-import { SupabaseProvider } from "@/components/supabase-provider";
+import LanguageSelector from "@/components/important/LanguageSelector";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,22 +27,23 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-   return (
-     <html lang="tr" suppressHydrationWarning>
-       <body
-         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-       >
-         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-           <LanguageProvider>
-             <div className="fixed top-4 right-4 z-50 flex gap-2 items-center">
-               <ThemeToggle />
+  return (
+    <html lang="tr" suppressHydrationWarning>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <LanguageProvider>
+            <div className="fixed top-4 right-4 z-50 flex gap-2 items-center">
+              <ThemeToggle />
 
-               <LanguageSelector />
-             </div>
-             <SupabaseProvider>{children}</SupabaseProvider>
-           </LanguageProvider>
-         </ThemeProvider>
-       </body>
-     </html>
-   );
+              <LanguageSelector />
+            </div>
+            {children}
+            <Toaster />
+          </LanguageProvider>
+        </ThemeProvider>
+      </body>
+    </html>
+  );
 }

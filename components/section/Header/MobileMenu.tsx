@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import { content } from "@/context/language-content";
-import { ThemeToggle } from "@/components/ThemeToggle";
-import LanguageSelector from "@/components/LanguageSelector";
+import { ThemeToggle } from "@/components/important/ThemeToggle";
+import LanguageSelector from "@/components/important/LanguageSelector";
 
 interface MobileMenuProps {
   onClose: () => void;

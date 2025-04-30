@@ -1,29 +1,41 @@
-import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { fetchWithAuth } from '@/lib/fetchWithAuth';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY! // create işlemi için service key gerekir
-);
+const BASE = `${process.env.NEXT_PUBLIC_API_BASE_URL}/portfolios`;
 
-export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const { name, userId } = body;
+// GET /portfolios
+export async function getMyPortfolios() {
+  const res = await fetchWithAuth(BASE);
+  if (!res.ok) throw new Error('Portföyler alınamadı');
+  return res.json();
+  
+}
 
-  if (!name || !userId) {
-    return NextResponse.json({ error: "Eksik bilgi" }, { status: 400 });
-  }
+// POST /portfolios
+export async function createPortfolio(name: string) {
+  const res = await fetchWithAuth(BASE, {
+    method: 'POST',
+    body: JSON.stringify({ name }),
+  });
+  if (!res.ok) throw new Error('Portföy oluşturulamadı');
+  console.log("olusturlaamdi")
+  return res.json();
+}
 
-  const { data, error } = await supabase.from("portfolios").insert([
-    {
-      name,
-      user_id: userId,
-    },
-  ]);
+// PUT /portfolios/{id}
+export async function updatePortfolio(id: string, name: string) {
+  const res = await fetchWithAuth(`${BASE}/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify({ name }),
+  });
+  if (!res.ok) throw new Error('Portföy güncellenemedi');
+  return res.json();
+}
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-
-  return NextResponse.json({ data }, { status: 200 });
+// DELETE /portfolios/{id}
+export async function deletePortfolio(id: string) {
+  const res = await fetchWithAuth(`${BASE}/${id}`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) throw new Error('Portföy silinemedi');
+  return res.json();
 }

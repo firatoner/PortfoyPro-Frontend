@@ -5,9 +5,8 @@ import { ChevronsUpDown, LogOut } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
-
   DropdownMenuItem,
-
+  DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -16,18 +15,26 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Button } from "./ui/button";
-import Link from "next/link";
-import { useUser } from "@supabase/auth-helpers-react";
+import { Button } from "../ui/button";
+import { supabase } from "@/lib/supabaseClient";
+import { useRouter } from "next/navigation";
 
-export function NavUser() {
+export function NavUser({
+  user,
+}: {
+  user: {
+    name: string;
+    email: string;
+    avatar: string;
+  };
+}) {
   const { isMobile } = useSidebar();
-  const user = useUser();
+  const router = useRouter();
 
-  if (!user) return null;
-
-  const name = user.email?.split("@")[0]; 
-  const email = user.email;
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push("/auth/login");
+  };
 
   return (
     <SidebarMenu>
@@ -39,8 +46,8 @@ export function NavUser() {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{name}</span>
-                <span className="truncate text-xs">{email}</span>
+                <span className="truncate font-medium">{user.name}</span>
+                <span className="truncate text-xs">{user.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -51,12 +58,18 @@ export function NavUser() {
             align="end"
             sideOffset={4}
           >
+            <DropdownMenuLabel className="p-0 font-normal">
+              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-medium">{user.name}</span>
+                  <span className="truncate text-xs">{user.email}</span>
+                </div>
+              </div>
+            </DropdownMenuLabel>
+
             <DropdownMenuItem>
-              <LogOut />
-              <Button variant="ghost">
-                <Link href="/">
-                  Log Out
-                </Link>
+              <Button onClick={handleLogout}>
+                <LogOut className="mr-2 size-4" placeholder="Logout" />
               </Button>
             </DropdownMenuItem>
           </DropdownMenuContent>

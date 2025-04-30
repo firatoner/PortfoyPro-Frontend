@@ -1,83 +1,182 @@
 "use client";
 
-import { useState } from "react";
-import { useUser } from "@supabase/auth-helpers-react";
-import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import { fetchWithAuth } from "@/lib/fetchWithAuth";
+import { supabase } from "@/lib/supabaseClient";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 
-const PortfoliosPage = () => {
-  const user = useUser();
-  const [showModal, setShowModal] = useState(false);
-  const [portfolioName, setPortfolioName] = useState("");
-  const [loading, setLoading] = useState(false);
-  console.log(setLoading)
+export default function MyPortfoliosPage() {
+  const [portfolios, setPortfolios] = useState<any[]>([]);
+  const [showForm, setShowForm] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentPortfolio, setCurrentPortfolio] = useState<any>(null);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
 
-  const handleCreatePortfolio = async () => {
-    if (!user) return; 
+  const BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-    const response = await fetch("http://localhost:3000/portfolio", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: portfolioName,
-        user_id: user.id,
-      }),
+  useEffect(() => {
+    const load = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) return;
+      const res = await fetchWithAuth(`${BASE}/portfolios`);
+      const data = await res.json();
+      setPortfolios(data);
+    };
+    load();
+  }, []);
+
+  const refresh = async () => {
+    const res = await fetchWithAuth(`${BASE}/portfolios`);
+    const data = await res.json();
+    setPortfolios(data);
+  };
+
+  const openCreateModal = () => {
+    setIsEditing(false);
+    setName("");
+    setDescription("");
+    setShowForm(true);
+  };
+
+  const openEditModal = (portfolio: any) => {
+    setIsEditing(true);
+    setCurrentPortfolio(portfolio);
+    setName(portfolio.name);
+    setDescription(portfolio.description || "");
+    setShowForm(true);
+  };
+
+  const handleSubmit = async () => {
+    if (!name.trim())
+      return toast({
+        title: "Hata",
+        description: "İsim boş olamaz",
+        variant: "destructive",
+      });
+
+    const endpoint = isEditing
+      ? `${BASE}/portfolios/${currentPortfolio.id}`
+      : `${BASE}/portfolios`;
+
+    const method = isEditing ? "PUT" : "POST";
+
+    const res = await fetchWithAuth(endpoint, {
+      method,
+      body: JSON.stringify({ name, description }),
     });
 
-    if (response.ok) {
-      alert("Portföy oluşturuldu!");
-      setShowModal(false);
-    } else {
-      const error = await response.json();
-      alert("Hata: " + error.message);
+    if (!res.ok) {
+      const err = await res.json();
+      return toast({
+        title: "Hata",
+        description: err.message,
+        variant: "destructive",
+      });
     }
+
+    toast({
+      title: isEditing ? "Güncellendi" : "Oluşturuldu",
+      description: `Portföy başarıyla ${
+        isEditing ? "güncellendi" : "oluşturuldu"
+      }.`,
+    });
+
+    setShowForm(false);
+    await refresh();
+  };
+
+  const handleDelete = async (id: number) => {
+    const confirmed = confirm("Bu portföyü silmek istiyor musun?");
+    if (!confirmed) return;
+
+    const res = await fetchWithAuth(`${BASE}/portfolios/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!res.ok) {
+      return toast({
+        title: "Hata",
+        description: "Silinemedi",
+        variant: "destructive",
+      });
+    }
+
+    toast({ title: "Silindi", description: "Portföy başarıyla silindi." });
+    await refresh();
   };
 
   return (
-    <div className="relative p-6">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold">Portföyler</h1>
-        <Button onClick={() => setShowModal(true)}>Portföy Ekle</Button>
+    <div className="p-6 space-y-6">
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold">Portföylerim</h1>
+        <Button onClick={openCreateModal}>Portföy Ekle</Button>
       </div>
 
-      {/* Modal */}
-      {showModal && (
-        <>
-          {/* Background Blur */}
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+        {portfolios.map((p) => (
           <div
-            className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-40"
-            onClick={() => setShowModal(false)}
-          />
-
-          {/* Modal Content */}
-          <div className="fixed inset-0 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-xl w-full max-w-md border border-gray-300 dark:border-gray-700">
-              <h2 className="text-xl font-semibold mb-4">Yeni Portföy Ekle</h2>
-              <Input
-                placeholder="Portföy adı girin"
-                value={portfolioName}
-                onChange={(e) => setPortfolioName(e.target.value)}
-              />
-              <div className="flex justify-end mt-4 gap-2">
-                <Button variant="outline" onClick={() => setShowModal(false)}>
-                  İptal
-                </Button>
-                <Button onClick={handleCreatePortfolio} disabled={loading}>
-                  {loading ? "Oluşturuluyor..." : "Oluştur"}
-                </Button>
-              </div>
+            key={p.id}
+            className="border p-4 rounded-xl bg-white dark:bg-gray-900 shadow hover:shadow-md transition"
+          >
+            <h2 className="font-semibold text-lg">{p.name}</h2>
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              {p.description}
+            </p>
+            <div className="flex gap-4 mt-4">
+              <Button variant="outline" onClick={() => openEditModal(p)}>
+                Düzenle
+              </Button>
+              <Button variant="destructive" onClick={() => handleDelete(p.id)}>
+                Sil
+              </Button>
             </div>
           </div>
-        </>
-      )}
+        ))}
+      </div>
 
-      {/* Placeholder Liste */}
-      <div className="text-muted">Henüz bir portföy oluşturulmadı.</div>
+      <Dialog open={showForm} onOpenChange={setShowForm}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>
+              {isEditing ? "Portföyü Düzenle" : "Yeni Portföy"}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="name">Ad</Label>
+              <Input
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="desc">Açıklama</Label>
+              <Textarea
+                id="desc"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+            <Button onClick={handleSubmit}>
+              {isEditing ? "Kaydet" : "Oluştur"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
-};
-
-export default PortfoliosPage;
+}
