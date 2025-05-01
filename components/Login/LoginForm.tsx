@@ -46,14 +46,14 @@ export default function LoginForm() {
       return;
     }
 
-    router.push("/dashboard");
+    router.push("/dashboard/homepage");
   };
 
   const handleOAuthLogin = async (provider: "google" | "facebook") => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: `${location.origin}/dashboard`,
+        redirectTo: `${location.origin}/dashboard/homepage`,
       },
     });
 

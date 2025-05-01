@@ -34,10 +34,10 @@ export default function DashboardPage() {
   return (
     <>
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <h1 className="text-2xl font-bold">Home</h1>
         <div className="flex items-center gap-4">
-          <p className="text-sm text-muted-foreground">
-         {userName}
+          <p className="text-sm text-muted-foreground font-bold">
+         Hosgeldin {userName}
           </p>
         </div>
       </div>

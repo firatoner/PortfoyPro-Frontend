@@ -5,6 +5,7 @@ import { ThemeToggle } from "@/components/important/ThemeToggle";
 import "./globals.css";
 import { LanguageProvider } from "@/context/LanguageContext";
 import LanguageSelector from "@/components/important/LanguageSelector";
+import { UserProvider } from "@/context/UserContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,8 +39,7 @@ export default function RootLayout({
 
               <LanguageSelector />
             </div>
-            {children}
-         
+            <UserProvider>{children}</UserProvider>
           </LanguageProvider>
         </ThemeProvider>
       </body>
