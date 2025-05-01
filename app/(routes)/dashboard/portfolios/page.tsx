@@ -25,7 +25,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-
+import { Pencil, Trash } from "lucide-react";
 export default function MyPortfoliosPage() {
   const [portfolios, setPortfolios] = useState<any[]>([]);
   const [showForm, setShowForm] = useState(false);
@@ -134,12 +134,14 @@ export default function MyPortfoliosPage() {
             </p>
             <div className="flex gap-4 mt-4">
               <Button variant="outline" onClick={() => openEditModal(p)}>
-                Düzenle
+                <Pencil />
               </Button>
 
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button variant="destructive">Sil</Button>
+                  <Button variant="destructive">
+                    <Trash />
+                  </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
