@@ -26,6 +26,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Pencil, Trash } from "lucide-react";
+import Link from "next/link";
 export default function MyPortfoliosPage() {
   const [portfolios, setPortfolios] = useState<any[]>([]);
   const [showForm, setShowForm] = useState(false);
@@ -128,10 +129,16 @@ export default function MyPortfoliosPage() {
             key={p.id}
             className="border p-4 rounded-xl bg-white dark:bg-black dark:border-white shadow hover:shadow-md transition"
           >
-            <h2 className="font-semibold text-lg">{p.name}</h2>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
-              {p.description}
-            </p>
+            <div
+              // href={`/dashboard/portfolios/${p.id}/assets`}
+              className="block"
+            >
+              <h2 className="font-semibold text-lg">{p.name}</h2>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                {p.description}
+              </p>
+            </div>
+
             <div className="flex gap-4 mt-4">
               <Button variant="outline" onClick={() => openEditModal(p)}>
                 <Pencil />
