@@ -1,3 +1,5 @@
+"use client";
+
 import type React from "react";
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
 import {
@@ -13,6 +15,7 @@ export default function DashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <SidebarProvider>
       <AppSidebar />

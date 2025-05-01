@@ -9,6 +9,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -24,6 +35,8 @@ export default function MyPortfoliosPage() {
   const [description, setDescription] = useState("");
 
   const BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
+  console.log("✅ BASE URL:", BASE);
+
 
   useEffect(() => {
     const load = async () => {
@@ -60,12 +73,10 @@ export default function MyPortfoliosPage() {
   };
 
   const handleSubmit = async () => {
-    if (!name.trim())
-      return toast({
-        title: "Hata",
-        description: "İsim boş olamaz",
-        variant: "destructive",
-      });
+    if (!name.trim()) {
+      toast.error("İsim boş olamaz");
+      return;
+    }
 
     const endpoint = isEditing
       ? `${BASE}/portfolios/${currentPortfolio.id}`
@@ -80,41 +91,28 @@ export default function MyPortfoliosPage() {
 
     if (!res.ok) {
       const err = await res.json();
-      return toast({
-        title: "Hata",
-        description: err.message,
-        variant: "destructive",
-      });
+      toast.error(err.message);
+      return;
     }
 
-    toast({
-      title: isEditing ? "Güncellendi" : "Oluşturuldu",
-      description: `Portföy başarıyla ${
-        isEditing ? "güncellendi" : "oluşturuldu"
-      }.`,
-    });
-
+    toast.success(
+      `Portföy başarıyla ${isEditing ? "güncellendi" : "oluşturuldu"}.`
+    );
     setShowForm(false);
     await refresh();
   };
 
   const handleDelete = async (id: number) => {
-    const confirmed = confirm("Bu portföyü silmek istiyor musun?");
-    if (!confirmed) return;
-
     const res = await fetchWithAuth(`${BASE}/portfolios/${id}`, {
       method: "DELETE",
     });
 
     if (!res.ok) {
-      return toast({
-        title: "Hata",
-        description: "Silinemedi",
-        variant: "destructive",
-      });
+      toast.error("Silinemedi");
+      return;
     }
 
-    toast({ title: "Silindi", description: "Portföy başarıyla silindi." });
+    toast.success("Portföy başarıyla silindi.");
     await refresh();
   };
 
@@ -129,7 +127,7 @@ export default function MyPortfoliosPage() {
         {portfolios.map((p) => (
           <div
             key={p.id}
-            className="border p-4 rounded-xl bg-white dark:bg-gray-900 shadow hover:shadow-md transition"
+            className="border p-4 rounded-xl bg-white dark:bg-black dark:border-white shadow hover:shadow-md transition"
           >
             <h2 className="font-semibold text-lg">{p.name}</h2>
             <p className="text-sm text-gray-600 dark:text-gray-300">
@@ -139,9 +137,29 @@ export default function MyPortfoliosPage() {
               <Button variant="outline" onClick={() => openEditModal(p)}>
                 Düzenle
               </Button>
-              <Button variant="destructive" onClick={() => handleDelete(p.id)}>
-                Sil
-              </Button>
+
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="destructive">Sil</Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Portföyü silmek istiyor musun?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Bu işlem geri alınamaz. "{p.name}" portföyü kalıcı olarak
+                      silinecek.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>İptal</AlertDialogCancel>
+                    <AlertDialogAction onClick={() => handleDelete(p.id)}>
+                      Evet, Sil
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </div>
         ))}

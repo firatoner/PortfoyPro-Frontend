@@ -29,7 +29,7 @@ export function NavMain() {
       </SidebarGroupLabel>
       <SidebarMenu>
         <SidebarMenuItem>
-          <SidebarMenuButton asChild>
+          <SidebarMenuButton asChild className="m-4 ">
             <a href="portfolios">
               <div className="flex items-center gap-2">
                 <GrTransaction />
@@ -37,23 +37,23 @@ export function NavMain() {
               </div>
             </a>
           </SidebarMenuButton>
-          <SidebarMenuButton asChild>
+          <SidebarMenuButton asChild className="m-4 ">
             <a href="Buy-Sell">
               <div className="flex items-center gap-2">
-                <AiOutlineTransaction />
+                <AiOutlineTransaction className="size-5" />
                 <span>Buy-Sell</span>
               </div>
             </a>
           </SidebarMenuButton>
-          <SidebarMenuButton asChild>
+          <SidebarMenuButton asChild className="m-4 ">
             <a href="transactions">
               <div className="flex items-center gap-2">
-                <FaSellcast />
+                <FaSellcast className="size-4" />
                 <span>Transactions</span>
               </div>
             </a>
           </SidebarMenuButton>
-          <SidebarMenuButton asChild>
+          <SidebarMenuButton asChild className="m-4 ">
             <a href="/profile">
               <div className="flex items-center gap-2">
                 <CgProfile className="size-4" />
@@ -61,7 +61,7 @@ export function NavMain() {
               </div>
             </a>
           </SidebarMenuButton>
-          <SidebarMenuButton asChild>
+          <SidebarMenuButton asChild className="m-4 ">
             <a href="/settings">
               <div className="flex items-center gap-2">
                 <Settings2 className="size-4" />
