@@ -27,7 +27,15 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Pencil, Trash } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 export default function MyPortfoliosPage() {
+  const router = useRouter();
+
+  const goToAssets = (portfolioId: string) => {
+    router.push(`/dashboard/portfolios/${portfolioId}/assets`);
+  };
+
   const [portfolios, setPortfolios] = useState<any[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -130,8 +138,8 @@ export default function MyPortfoliosPage() {
             className="border p-4 rounded-xl bg-white dark:bg-black dark:border-white shadow hover:shadow-md transition"
           >
             <div
-              // href={`/dashboard/portfolios/${p.id}/assets`}
-              className="block"
+              onClick={() => goToAssets(p.id)}
+              className="block cursor-pointer p-2 rounded transition"
             >
               <h2 className="font-semibold text-lg">{p.name}</h2>
               <p className="text-sm text-gray-600 dark:text-gray-300">

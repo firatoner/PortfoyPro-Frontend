@@ -45,8 +45,8 @@ export function NavMain() {
               <span>Portfolios</span>
             </a>
           </SidebarMenuButton>
-
-          <SidebarMenuButton
+          {/*Simdilik bu sayfa kaldirildi */}
+          {/* <SidebarMenuButton
             asChild
             className={clsx("m-2 mb-4", {
               "bg-muted text-muted-foreground rounded-md":
@@ -57,7 +57,7 @@ export function NavMain() {
               <AiOutlineTransaction className="size-5" />
               <span>Buy-Sell</span>
             </a>
-          </SidebarMenuButton>
+          </SidebarMenuButton> */}
 
           <SidebarMenuButton
             asChild
