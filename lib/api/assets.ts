@@ -3,7 +3,7 @@ import { fetchWithAuth } from "@/lib/fetchWithAuth";
 const BASE = `${process.env.NEXT_PUBLIC_API_BASE_URL}/assets`;
 
 // GET /assets/portfolio/{portfolioId}
-export async function getAssetsByPortfolioId(portfolioId: string) {
+export async function getAssetsByPortfolioId(portfolioId: number) {
   const res = await fetchWithAuth(`${BASE}/portfolio/${portfolioId}`);
   if (!res.ok) throw new Error("Varlıklar getirilemedi");
   return res.json();

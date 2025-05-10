@@ -160,7 +160,7 @@ export default function AssetsPage() {
       case "USD":
         return amount * buyPrice * rates.TRY;
       case "EUR":
-        return amount * buyPrice * rates.TRY; // ✅ EUR → TL direkt dönüşüm
+        return amount * buyPrice * rates.TRY; 
       default:
         return 0;
     }
@@ -183,7 +183,7 @@ export default function AssetsPage() {
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
               <Button className="mb-4" onClick={handleLiveAssetModalOpen}>
-                Canlı Döviz Verisi Ekle
+                Varlik ekle
               </Button>
             </DialogTrigger>
 

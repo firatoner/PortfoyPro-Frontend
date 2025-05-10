@@ -93,40 +93,39 @@ export default function DashboardPage() {
 
   if (loading) return <p>Yükleniyor...</p>;
 
- return (
-   <>
-     <div className="flex items-center justify-between">
-       <h1 className="text-2xl font-bold">Home</h1>
-       <p className="text-sm text-muted-foreground font-bold">
-         Hoşgeldin {userName}
-       </p>
-     </div>
+  return (
+    <>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Home</h1>
+        <p className="text-sm text-muted-foreground font-bold">
+          Hoşgeldin {userName}
+        </p>
+      </div>
 
-     <div className="grid auto-rows-min gap-4 md:grid-cols-2">
-       {/* 1. Kutu: Tüm Portföyler Grafiği */}
-       <div className="min-h-[400px] rounded-xl bg-muted/50 p-4">
-         <AllPortfoliosPie data={allAssets} />
-       </div>
+      <div className="grid auto-rows-min gap-4 md:grid-cols-2">
+        {/* 1. Kutu: Tüm Portföyler Grafiği */}
+        <div className="min-h-[400px] rounded-xl bg-muted/50 p-4">
+          <AllPortfoliosPie data={allAssets} />
+        </div>
 
-       {/* 2. Kutu: Seçili Portföy Grafiği + Combobox */}
-       <div className="min-h-[400px] rounded-xl bg-muted/50 p-4 flex flex-col gap-4">
-         <PortfolioCombobox
-           portfolios={portfolios}
-           selectedId={selectedPortfolio?.id}
-           onChange={(id) => {
-             const selected = portfolios.find((p) => p.id === id);
-             setSelectedPortfolio(selected || null);
-           }}
-         />
-         <div className="flex-1 flex items-center justify-center">
-           <SinglePortfolioPie data={selectedPortfolioAssets} />
-         </div>
-       </div>
-     </div>
+        {/* 2. Kutu: Seçili Portföy Grafiği + Combobox */}
+        <div className="min-h-[400px] rounded-xl bg-muted/50 p-4 flex flex-col gap-4">
+          <PortfolioCombobox
+            portfolios={portfolios}
+            selectedId={selectedPortfolio?.id}
+            onChange={(id) => {
+              const selected = portfolios.find((p) => p.id === id);
+              setSelectedPortfolio(selected || null);
+            }}
+          />
+          <div className="flex-1 flex items-center justify-center">
+            <SinglePortfolioPie data={selectedPortfolioAssets} />
+          </div>
+        </div>
+      </div>
 
-     {/* 3. Kutu: Alt bölüm */}
-     <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
-   </>
- );
-
+      {/* 3. Kutu: Alt bölüm */}
+      <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+    </>
+  );
 }
