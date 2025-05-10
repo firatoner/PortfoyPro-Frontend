@@ -76,6 +76,71 @@ resetPasswordDesc: "E-posta adresini gir, sana bir sıfırlama bağlantısı gö
     kvkk: "KVKK",
     disclaimer: "Yasal Uyarılar",
     footerText: "2024 PortfoyPro. Tüm hakları saklıdır.",
+    footer: {
+      contact: {
+        title: "İletişim",
+        emailLabel: "E-posta",
+        phoneLabel: "Telefon",
+        addressLabel: "Adres",
+        hoursLabel: "Çalışma Saatleri",
+        hours: "Hafta içi her gün 09:00 - 18:00",
+      },
+      cookiePolicy: {
+        title: "Çerez Politikası",
+        p1: "Web sitemiz çerezleri, kullanıcı deneyimini geliştirmek ve analiz hizmetleri sunmak amacıyla kullanır.",
+        p2: "Çerezler, tarayıcınız tarafından cihazınıza kaydedilen küçük metin dosyalarıdır. Bu dosyalar site tercihlerinizin hatırlanmasına yardımcı olur.",
+        p3: "Çerezleri reddetmek isterseniz, tarayıcı ayarlarınızdan bu tercihleri değiştirebilirsiniz. Ancak bazı özellikler etkilenebilir.",
+      },
+      faq: {
+        title: "Sıkça Sorulan Sorular",
+        items: [
+          {
+            q: "PortföyPro nedir?",
+            a: "PortföyPro, yatırımlarınızı tek bir yerden takip edebileceğiniz kapsamlı bir portföy yönetim aracıdır.",
+          },
+          {
+            q: "Hesabımı nasıl silebilirim?",
+            a: "Ayarlar sayfasından hesabınızı silme isteği oluşturabilirsiniz.",
+          },
+          {
+            q: "Verilerim güvende mi?",
+            a: "Evet. Tüm verileriniz şifreli olarak saklanmakta ve üçüncü taraflarla paylaşılmamaktadır.",
+          },
+        ],
+      },
+     
+        gdpr: {
+          title: "Veri Koruma (GDPR)",
+          p1: "PortföyPro olarak kullanıcı gizliliğine önem veriyoruz. Verileriniz yalnızca hizmet sunmak amacıyla toplanır ve işlenir.",
+          p2: "Verilerinizi görüntüleme, düzeltme, silme veya işlenmesine itiraz etme hakkına sahipsiniz.",
+          p3: "Bu hakları kullanmak için bizimle iletişime geçebilirsiniz: info@portfoypro.com",
+      },
+      guides: {
+        title: "Kullanım Rehberleri",
+        items: [
+          "1. Yeni bir portföy oluşturmak için 'Portföylerim' sekmesine gidin.",
+          "2. Varlık eklemek için oluşturduğunuz portföyü seçin ve 'Varlık Ekle' butonuna tıklayın.",
+          "3. Alım-satım işlemleri için 'İşlemler' menüsünden ilgili varlığı seçin.",
+          "4. Grafiklerle performans takibi için 'Dashboard' sayfasını kullanın.",
+          "5. Ayarlar bölümünden tema ve dil tercihinizi düzenleyebilirsiniz.",
+        ],
+      },
+      privacyPolicy: {
+        title: "Gizlilik Politikası",
+        p1: "Kullanıcı bilgileriniz gizli tutulur ve yasal zorunluluklar dışında üçüncü taraflarla paylaşılmaz.",
+        p2: "Veriler yalnızca kullanıcı deneyimini geliştirmek, güvenliği sağlamak ve hizmet sunmak amacıyla işlenir.",
+        p3: "Detaylı gizlilik politikamız için bizimle iletişime geçebilirsiniz: info@portfoypro.com",
+      },
+
+       termsOfUse: {
+    title: "Kullanım Koşulları",
+    p1: "PortföyPro'yu kullanan tüm kullanıcılar, belirtilen kuralları ve politikaları kabul etmiş sayılır.",
+    p2: "Hizmetlerimizde yapılan değişiklikler önceden haber verilmeksizin uygulanabilir.",
+    p3: "Kullanıcılar, PortföyPro'yu yalnızca yasal amaçlarla kullanmayı taahhüt eder.",
+  }
+
+    }
+    
    
 
   },
@@ -154,8 +219,70 @@ resetPasswordDesc: "Enter your email address, and we will send you a reset link.
     privacyPolicy: "Privacy Policy",
     termsOfUse: "Terms of Use",
     cookiePolicy: "Cookie Policy",
-    kvkk: "KVKK",
+    kvkk: "GDPR",
     disclaimer: "Disclaimer",
     footerText: "2024 PortfoyPro. All rights reserved.",
+    footer: {
+      contact: {
+        title: "Contact",
+        emailLabel: "Email",
+        phoneLabel: "Phone",
+        addressLabel: "Address",
+        hoursLabel: "Working Hours",
+        hours: "Weekdays 9:00 AM - 6:00 PM",
+      },
+      cookiePolicy: {
+        title: "Cookie Policy",
+        p1: "Our website uses cookies to improve user experience and provide analytical services.",
+        p2: "Cookies are small text files stored on your device by your browser, helping to remember site preferences.",
+        p3: "If you wish to disable cookies, you can do so through your browser settings. Some features may be affected.",
+      },
+      faq: {
+        title: "Frequently Asked Questions",
+        items: [
+          {
+            q: "What is PortföyPro?",
+            a: "PortföyPro is a comprehensive portfolio tracking tool to manage all your investments in one place.",
+          },
+          {
+            q: "How can I delete my account?",
+            a: "You can request account deletion from the settings page.",
+          },
+          {
+            q: "Is my data secure?",
+            a: "Yes. All your data is stored securely and never shared with third parties.",
+          },
+        ],
+      },
+      gdpr: {
+        title: "Data Protection (GDPR)",
+        p1: "At PortföyPro, we value your privacy. Your data is collected and processed solely to provide our services.",
+        p2: "You have the right to access, correct, delete, or object to the processing of your personal data.",
+        p3: "To exercise these rights, please contact us at: info@portfoypro.com",
+      },
+      guides: {
+        title: "User Guides",
+        items: [
+          "1. To create a new portfolio, go to the 'My Portfolios' section.",
+          "2. To add an asset, select your portfolio and click 'Add Asset'.",
+          "3. For buy/sell operations, use the 'Transactions' menu.",
+          "4. Use the 'Dashboard' page to track your portfolio's performance.",
+          "5. You can change theme and language from the Settings section.",
+        ],
+      },
+      privacyPolicy: {
+        title: "Privacy Policy",
+        p1: "Your information is kept confidential and is not shared with third parties unless legally required.",
+        p2: "Data is processed only to enhance user experience, ensure security, and deliver services.",
+        p3: "For a detailed privacy policy, feel free to contact us at: info@portfoypro.com",
+      },
+      termsOfUse: {
+        title: "Terms of Use",
+        p1: "By using PortföyPro, all users agree to comply with the stated rules and policies.",
+        p2: "Changes to our services may be applied without prior notice.",
+        p3: "Users agree to use PortföyPro only for lawful purposes.",
+      }
+    }
+    
   },
 } as const;

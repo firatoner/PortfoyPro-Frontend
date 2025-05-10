@@ -14,7 +14,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { getAssetsByPortfolioId } from "@/lib/api/assets";
-import { getMyPortfolios } from "@/lib/api/portfolio";
+import { getMyPortfolios } from "@/app/api/portfolios/route";
 import { createTransaction } from "@/lib/api/transactions";
 import { TransactionHistoryModal } from "./TransactionHistoryModal";
 

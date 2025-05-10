@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import TransactionForm from "@/components/dashboard/transactions/TransactionForm";
-import { getMyPortfolios } from "@/lib/api/portfolio";
+import { getMyPortfolios } from "@/app/api/portfolios/route";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function TransactionsPage() {

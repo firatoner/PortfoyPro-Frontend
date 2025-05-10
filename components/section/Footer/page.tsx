@@ -3,15 +3,15 @@
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import { content } from "@/context/language-content";
-import {  FaTwitterSquare, FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaTwitterSquare, FaGithub, FaLinkedin } from "react-icons/fa";
 
 export default function Footer() {
   const { language } = useLanguage();
   const t = content[language];
 
   return (
-    <footer className="bg-gray-300 dark:bg-gray-950 text-gray-900 dark:text-white py-10 ">
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="bg-gray-300 border-t-1 dark:border-white dark:bg-gray-950 text-gray-900 dark:text-white py-5 ">
+      <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Hakkımızda */}
         <div>
           <h3 className="text-lg font-bold mb-4">{t.about}</h3>
@@ -33,11 +33,6 @@ export default function Footer() {
             <li>
               <Link href="/auth/register" className="hover:underline">
                 {t.signUp}
-              </Link>
-            </li>
-            <li>
-              <Link href="/dashboard" className="hover:underline">
-                Dashboard
               </Link>
             </li>
           </ul>
@@ -85,7 +80,7 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/kvkk" className="hover:underline">
+              <Link href="/gdpr" className="hover:underline">
                 {t.kvkk}
               </Link>
             </li>
@@ -93,9 +88,8 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Alt kısım */}
       <div className="mt-10 border-t dark:border-gray-700 pt-6 text-sm text-center">
-        <p className="mb-2">{t.footerText}</p>
+        <p className="mb-6">{t.footerText}</p>
         <div className="flex justify-center gap-4 text-lg text-gray-600 dark:text-gray-400">
           <a href="#" aria-label="Facebook" className="hover:text-blue-500">
             <FaGithub />
@@ -106,7 +100,6 @@ export default function Footer() {
           <a href="#" aria-label="Instagram" className="hover:text-pink-500">
             <FaLinkedin />
           </a>
-       
         </div>
       </div>
     </footer>

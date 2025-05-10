@@ -15,6 +15,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLanguage } from "@/context/LanguageContext";
 import { content } from "@/context/language-content";
+import Link from "next/link";
+import { PiKeyReturnFill } from "react-icons/pi";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -57,6 +59,10 @@ export default function RegisterForm() {
   return (
     <div className="w-full px-4 sm:px-6 lg:px-0 flex justify-center items-center min-h-screen bg-white dark:bg-black transition-colors">
       <Card className="w-full max-w-[600px] shadow-lg border border-black dark:border-white p-10 rounded-xl bg-white dark:bg-black text-black dark:text-white transition-colors">
+        <Link href="/">
+          {" "}
+          <PiKeyReturnFill size={35} />
+        </Link>
         <CardHeader>
           <CardTitle className="text-4xl font-bold text-center m-5">
             {t.signUp}

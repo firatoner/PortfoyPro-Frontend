@@ -7,7 +7,7 @@ html {
 }
 
 html.dark {
-  @apply bg-[#0f172a] text-white; /* slate-950 */
+  @apply bg-[#0a0a0a] text-white; /* slate-950 */
 }
 @theme inline {
   --color-background: var(--background);

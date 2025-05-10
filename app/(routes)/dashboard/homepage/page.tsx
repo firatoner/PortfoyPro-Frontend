@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
-import { getMyPortfolios } from "@/lib/api/portfolio";
+import { getMyPortfolios } from "@/app/api/portfolios/route";
 import { getAssetsByPortfolioId } from "@/lib/api/assets";
-import AllPortfoliosPie from "@/components/dashboard/AllPortfoliosPie";
-import SinglePortfolioPie from "@/components/dashboard/SinglePortfolioPie";
-import { PortfolioCombobox } from "@/components/dashboard/portfolio-combobox";
+import AllPortfoliosPie from "@/components/dashboard/portfolio/AllPortfoliosPie";
+import SinglePortfolioPie from "@/components/dashboard/portfolio/SinglePortfolioPie";
+import { PortfolioCombobox } from "@/components/dashboard/portfolio/portfolio-combobox";
 
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
@@ -97,11 +97,11 @@ export default function DashboardPage() {
     <>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Home</h1>
+
         <p className="text-sm text-muted-foreground font-bold">
           Hoşgeldin {userName}
         </p>
       </div>
-
       <div className="grid auto-rows-min gap-4 md:grid-cols-2">
         {/* 1. Kutu: Tüm Portföyler Grafiği */}
         <div className="min-h-[400px] rounded-xl bg-muted/50 p-4">
@@ -123,7 +123,6 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
-
       {/* 3. Kutu: Alt bölüm */}
       <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
     </>

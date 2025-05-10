@@ -34,9 +34,8 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <LanguageProvider>
-            <div className="fixed top-4 right-4 z-50 flex gap-2 items-center">
+            <div className="fixed top-4 right-4  flex gap-6 items-center">
               <ThemeToggle />
-
               <LanguageSelector />
             </div>
             <UserProvider>{children}</UserProvider>
