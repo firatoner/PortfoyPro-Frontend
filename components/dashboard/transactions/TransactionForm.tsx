@@ -100,7 +100,7 @@ export default function TransactionForm() {
         fee: "",
         note: "",
       }));
-    } catch (error) {
+    } catch (erro) {
       toast.error("İşlem eklenemedi!");
     }
   };
@@ -153,7 +153,12 @@ export default function TransactionForm() {
               <Label>Varlık</Label>
               <Select onValueChange={(val) => handleChange("assetId", val)}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Varlık seçin" />
+                  <SelectValue
+                    placeholder="Varlık seçin"
+                    defaultValue={form.assetId}
+                  >
+                    {assets.find((a) => String(a.id) === form.assetId)?.name}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   {assets.map((a) => (

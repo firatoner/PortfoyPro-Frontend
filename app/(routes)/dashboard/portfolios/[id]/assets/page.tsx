@@ -102,7 +102,7 @@ export default function AssetsPage() {
         );
       }
 
-      const updated = await getAssetsByPortfolioId(portfolioId);
+      const updated = await getAssetsByPortfolioId(Number(portfolioId));
       setAssets(updated);
       setDialogOpen(false);
       setError(null);
@@ -115,7 +115,7 @@ export default function AssetsPage() {
   const handleDelete = async (id: number) => {
     try {
       await deleteAsset(id);
-      const updated = await getAssetsByPortfolioId(portfolioId);
+      const updated = await getAssetsByPortfolioId(Number(portfolioId));
       setAssets(updated);
     } catch (err) {
       console.error(err);

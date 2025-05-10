@@ -18,6 +18,7 @@ export async function createAsset(data: {
   currency: string;
   note?: string;
   portfolioId: number;
+  name: string;
 }) {
   const res = await fetchWithAuth(`${BASE}`, {
     method: "POST",
