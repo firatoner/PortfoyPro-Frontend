@@ -8,6 +8,8 @@ import { getAssetsByPortfolioId } from "@/lib/api/assets";
 import AllPortfoliosPie from "@/components/dashboard/portfolio/AllPortfoliosPie";
 import SinglePortfolioPie from "@/components/dashboard/portfolio/SinglePortfolioPie";
 import { PortfolioCombobox } from "@/components/dashboard/portfolio/portfolio-combobox";
+import { useLanguage } from "@/context/LanguageContext";
+import { content } from "@/context/language-content";
 
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
@@ -19,6 +21,9 @@ export default function DashboardPage() {
   );
   const [portfolios, setPortfolios] = useState([]);
   const [selectedPortfolio, setSelectedPortfolio] = useState<any>(null);
+  const { language } = useLanguage();
+  const t = content[language];
+
 
   const router = useRouter();
 
@@ -91,15 +96,15 @@ export default function DashboardPage() {
     loadAssets();
   }, [selectedPortfolio]);
 
-  if (loading) return <p>Yükleniyor...</p>;
+  if (loading) return <p>{ t.loading}</p>;
 
   return (
     <>
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Home</h1>
+        <h1 className="text-2xl font-bold">{t.home}</h1>
 
         <p className="text-sm text-muted-foreground font-bold">
-          Hoşgeldin {userName}
+          {t.welcome} {userName}
         </p>
       </div>
       <div className="grid auto-rows-min gap-4 md:grid-cols-2">

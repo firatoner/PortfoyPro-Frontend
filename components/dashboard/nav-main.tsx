@@ -11,13 +11,17 @@ import {
 } from "@/components/ui/sidebar";
 import { FaSellcast } from "react-icons/fa6";
 import { GrTransaction } from "react-icons/gr";
-import { AiOutlineTransaction } from "react-icons/ai";
+
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { SiTransportforlondon } from "react-icons/si";
+import { useLanguage } from "@/context/LanguageContext";
+import { content } from "@/context/language-content";
 
 export function NavMain() {
   const pathname = usePathname();
+  const { language } = useLanguage()
+  const t=content[language]
 
   return (
     <SidebarGroup>
@@ -42,7 +46,7 @@ export function NavMain() {
           >
             <a href="/dashboard/portfolios" className="flex gap-2 ">
               <GrTransaction />
-              <span>Portfolios</span>
+              <span>{t.myPortfolio}</span>
             </a>
           </SidebarMenuButton>
           {/*Simdilik bu sayfa kaldirildi */}
@@ -68,7 +72,7 @@ export function NavMain() {
           >
             <a href="/dashboard/transactions" className="flex gap-2 ">
               <FaSellcast className="size-4" />
-              <span>Transactions</span>
+              <span>{ t.transactions}</span>
             </a>
           </SidebarMenuButton>
 
@@ -81,7 +85,7 @@ export function NavMain() {
           >
             <a href="/dashboard/profile" className="flex gap-2 ">
               <CgProfile className="size-4" />
-              <span>Profile</span>
+              <span>{ t.profile}</span>
             </a>
           </SidebarMenuButton>
 
@@ -94,7 +98,7 @@ export function NavMain() {
           >
             <a href="/dashboard/settings" className="flex gap-2 ">
               <Settings2 className="size-4" />
-              <span>Settings</span>
+              <span>{ t.settings}</span>
             </a>
           </SidebarMenuButton>
         </SidebarMenuItem>

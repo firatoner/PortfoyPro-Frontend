@@ -1,5 +1,7 @@
 "use client";
 
+import { content } from "@/context/language-content";
+import { useLanguage } from "@/context/LanguageContext";
 import dynamic from "next/dynamic";
 
 const ResponsivePie = dynamic(
@@ -8,9 +10,11 @@ const ResponsivePie = dynamic(
 );
 
 export default function SinglePortfolioPie({ data }: { data: any[] }) {
+  const { language } = useLanguage();
+  const t = content[language]
   if (!data.length)
     return (
-      <p className="text-muted-foreground mt-4">Seçili portföyde varlık yok.</p>
+      <p className="text-muted-foreground mt-4">{t.selectPortfolio}</p>
     );
 
   return (

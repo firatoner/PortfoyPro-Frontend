@@ -8,12 +8,15 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
+import { useLanguage } from "@/context/LanguageContext";
+import { content } from "@/context/language-content";
 
 export default function ProfilePage() {
   const { user, loading } = useUser();
   const [fullName, setFullName] = useState("");
   const [saving, setSaving] = useState(false);
-
+  const { language } = useLanguage();
+  const t = content[language];
   useEffect(() => {
     if (!loading && user) {
       setFullName(user.name || "");
@@ -38,9 +41,7 @@ export default function ProfilePage() {
   };
 
   if (loading) {
-    return (
-      <p className="text-center text-muted-foreground p-6">Yükleniyor...</p>
-    );
+    return <p className="text-center text-muted-foreground p-6">{t.loading}</p>;
   }
 
   return (
@@ -48,10 +49,9 @@ export default function ProfilePage() {
       {/* Ad Soyad */}
       <Card>
         <CardHeader>
-          <CardTitle>İsim Soyisim</CardTitle>
+          <CardTitle>{t.fullName}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
-          <Label htmlFor="fullName">Ad Soyad</Label>
           <Input
             id="fullName"
             value={fullName}
@@ -66,7 +66,7 @@ export default function ProfilePage() {
       {/* E-posta */}
       <Card>
         <CardHeader>
-          <CardTitle>E-posta</CardTitle>
+          <CardTitle>{t.email}</CardTitle>
         </CardHeader>
         <CardContent>
           <Input value={user?.email ?? ""} disabled />

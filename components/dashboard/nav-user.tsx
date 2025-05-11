@@ -18,6 +18,8 @@ import {
 import { Button } from "../ui/button";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/context/LanguageContext";
+import { content } from "@/context/language-content";
 
 export function NavUser({
   user,
@@ -35,6 +37,8 @@ export function NavUser({
     router.push("/auth/login");
   };
 
+  const { language } = useLanguage()
+  const t=content[language]
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -66,7 +70,7 @@ export function NavUser({
 
             <DropdownMenuItem>
               <Button onClick={handleLogout}>
-              Log Out
+            {t.logout}
               </Button>
             </DropdownMenuItem>
           </DropdownMenuContent>

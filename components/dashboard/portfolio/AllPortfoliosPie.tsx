@@ -1,5 +1,7 @@
 "use client";
 
+import { content } from "@/context/language-content";
+import { useLanguage } from "@/context/LanguageContext";
 import dynamic from "next/dynamic";
 
 const ResponsivePie = dynamic(
@@ -8,7 +10,9 @@ const ResponsivePie = dynamic(
 );
 
 export default function AllPortfoliosPie({ data }: { data: any[] }) {
-  if (!data.length) return <p>Varlık yok</p>;
+  const { language } = useLanguage();
+  const t = content[language];
+  if (!data.length) return <p>{t.noAsset}</p>;
 
   return (
     <ResponsivePie

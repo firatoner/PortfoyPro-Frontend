@@ -33,6 +33,8 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
+import { useLanguage } from "@/context/LanguageContext";
+import { content } from "@/context/language-content";
 
 type Asset = {
   id: number;
@@ -55,6 +57,8 @@ export default function AssetsPage() {
   const [exchangeRates, setExchangeRates] = useState<any>(null);
   const [selected, setSelected] = useState<{ [key: string]: boolean }>({});
   const [amounts, setAmounts] = useState<{ [key: string]: number }>({});
+  const { language } = useLanguage():
+  const t = content[language];
 
   useEffect(() => {
     if (!portfolioId) return;
@@ -168,7 +172,7 @@ export default function AssetsPage() {
 
   return (
     <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">Varlıklar</h1>
+      <h1 className="text-xl font-bold mb-4">{t.assets}</h1>
 
       {error && (
         <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
@@ -177,19 +181,19 @@ export default function AssetsPage() {
       )}
 
       {loading ? (
-        <p>Yükleniyor...</p>
+        <p>{ t.loading}</p>
       ) : (
         <>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
               <Button className="mb-4" onClick={handleLiveAssetModalOpen}>
-                Varlik ekle
+               {t.addAsset}
               </Button>
             </DialogTrigger>
 
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Eklemek istediğiniz varlıkları seçin</DialogTitle>
+                  <DialogTitle>{ t.wantToAdd}</DialogTitle>
               </DialogHeader>
 
               <div className="space-y-4">
@@ -227,7 +231,7 @@ export default function AssetsPage() {
 
                     <Input
                       type="number"
-                      placeholder="Miktar"
+                      placeholder={t.amount}
                       className="w-24"
                       value={amounts[code] || ""}
                       onChange={(e) =>
@@ -244,14 +248,14 @@ export default function AssetsPage() {
                   className="w-full mt-2"
                   onClick={handleCreateSelectedAssets}
                 >
-                  Seçilen Varlıkları Ekle
+                {t.addSelectedAssets}
                 </Button>
               </div>
             </DialogContent>
           </Dialog>
 
           {assets.length === 0 ? (
-            <p>Bu portföyde henüz varlık yok.</p>
+              <p>{ t.thereNoAssets}</p>
           ) : (
             <ul className="space-y-2">
               {assets.map((a) => (
@@ -296,17 +300,16 @@ export default function AssetsPage() {
                       <AlertDialogContent>
                         <AlertDialogHeader>
                           <AlertDialogTitle>
-                            Varlığı silmek istiyor musun?
+                           {t.deleteAsset}
                           </AlertDialogTitle>
                           <AlertDialogDescription>
-                            Bu işlem geri alınamaz. "{a.symbol}" portföyden
-                            kaldırılacak.
+                            {t.deleteAssetDescription}
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel>Vazgeç</AlertDialogCancel>
+                          <AlertDialogCancel>{ t.cancel}</AlertDialogCancel>
                           <AlertDialogAction onClick={() => handleDelete(a.id)}>
-                            Evet, sil
+                           {t.yesDelete}
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>
@@ -324,7 +327,7 @@ export default function AssetsPage() {
           >
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Varlık Düzenle</DialogTitle>
+                  <DialogTitle>{ t.editAsset}</DialogTitle>
               </DialogHeader>
 
               {editingAsset && (
@@ -358,7 +361,7 @@ export default function AssetsPage() {
                       }
                     }}
                   >
-                    Kaydet
+                   {t.save}
                   </Button>
                 </div>
               )}

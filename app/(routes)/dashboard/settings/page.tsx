@@ -18,11 +18,12 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 import { useLanguage } from "@/context/LanguageContext";
 import { supabase } from "@/lib/supabaseClient";
+import { content } from "@/context/language-content";
 
 export default function SettingsPage() {
   const { setTheme, theme } = useTheme();
   const { language, setLanguage } = useLanguage();
-
+const t=content[language]
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [saving, setSaving] = useState(false);
@@ -97,18 +98,18 @@ export default function SettingsPage() {
       {/* Tema Seçimi */}
       <Card>
         <CardHeader>
-          <CardTitle>Tema Seçimi</CardTitle>
+          <CardTitle>{ t.themeSelection}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
-          <Label htmlFor="theme">Tema</Label>
+         
           <Select value={theme} onValueChange={handleThemeChange}>
             <SelectTrigger>
               <SelectValue placeholder={"Tema Seçin"} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="light">Açık</SelectItem>
-              <SelectItem value="dark">Koyu</SelectItem>
-              <SelectItem value="system">Sistem</SelectItem>
+              <SelectItem value="light">{ t.light}</SelectItem>
+              <SelectItem value="dark">{ t.dark}</SelectItem>
+              <SelectItem value="system">{ t.system}</SelectItem>
             </SelectContent>
           </Select>
         </CardContent>
@@ -117,10 +118,10 @@ export default function SettingsPage() {
       {/* Dil Seçimi */}
       <Card>
         <CardHeader>
-          <CardTitle>Dil Seçimi</CardTitle>
+          <CardTitle>{t.languageSelection }</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
-          <Label htmlFor="language">Dil</Label>
+         
           <Select value={language} onValueChange={handleLanguageChange}>
             <SelectTrigger>
               <SelectValue placeholder={"Dil Seçin"} />
@@ -136,10 +137,10 @@ export default function SettingsPage() {
       {/* Şifre Değiştirme */}
       <Card>
         <CardHeader>
-          <CardTitle>Şifre Değiştir</CardTitle>
+          <CardTitle>{ t.changepassword}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
-          <Label htmlFor="newPassword">Yeni Şifre</Label>
+          <Label htmlFor="newPassword">{t.newPassword }</Label>
           <Input
             id="newPassword"
             type="password"
@@ -147,7 +148,7 @@ export default function SettingsPage() {
             onChange={(e) => setNewPassword(e.target.value)}
           />
 
-          <Label htmlFor="confirmPassword">Yeni Şifre (Tekrar)</Label>
+          <Label htmlFor="confirmPassword">{t.newPassword} ({t.again})</Label>
           <Input
             id="confirmPassword"
             type="password"
@@ -156,7 +157,7 @@ export default function SettingsPage() {
           />
 
           <Button onClick={handleChangePassword} disabled={saving}>
-            {saving ? "Kaydediliyor..." : "Şifreyi Güncelle"}
+    {t.change}
           </Button>
         </CardContent>
       </Card>

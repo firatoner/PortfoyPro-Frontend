@@ -17,6 +17,8 @@ import { getAssetsByPortfolioId } from "@/lib/api/assets";
 import { getMyPortfolios } from "@/app/api/portfolios/route";
 import { createTransaction } from "@/lib/api/transactions";
 import { TransactionHistoryModal } from "./TransactionHistoryModal";
+import { useLanguage } from "@/context/LanguageContext";
+import { content } from "@/context/language-content";
 
 type Portfolio = {
   id: string;
@@ -30,6 +32,8 @@ type Asset = {
 
 export default function TransactionForm() {
   const [portfolios, setPortfolios] = useState<Portfolio[]>([]);
+  const {language} = useLanguage()
+  const t=content[language]
   const [selectedPortfolio, setSelectedPortfolio] = useState<Portfolio | null>(
     null
   );
@@ -107,11 +111,11 @@ export default function TransactionForm() {
 
   return (
     <div className="space-y-4 border p-4 rounded-xl shadow-lg bg-background">
-      <h2 className="text-xl font-bold">İşlem Ekle</h2>
+     
 
       {/* Portföy seçimi */}
       <div>
-        <Label>Portföy Seçin</Label>
+        <Label></Label>
         <Select
           onValueChange={(val) => {
             const found = portfolios.find((p) => p.id === val);
@@ -120,7 +124,7 @@ export default function TransactionForm() {
           }}
         >
           <SelectTrigger>
-            <SelectValue placeholder="Portföy seçin" />
+            <SelectValue placeholder={t.selectPortfolio} />
           </SelectTrigger>
           <SelectContent>
             {portfolios.map((p) => (
@@ -150,11 +154,11 @@ export default function TransactionForm() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Asset Seçimi */}
             <div>
-              <Label>Varlık</Label>
+              <Label>{t.asset}</Label>
               <Select onValueChange={(val) => handleChange("assetId", val)}>
                 <SelectTrigger>
                   <SelectValue
-                    placeholder="Varlık seçin"
+                    placeholder={t.selectAsset}
                     defaultValue={form.assetId}
                   >
                     {assets.find((a) => String(a.id) === form.assetId)?.name}
@@ -171,7 +175,7 @@ export default function TransactionForm() {
             </div>
 
             <div>
-              <Label>İşlem Türü</Label>
+              <Label>{t.transactionType}</Label>
               <Select
                 value={form.type}
                 onValueChange={(val) => handleChange("type", val)}
@@ -180,14 +184,14 @@ export default function TransactionForm() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="buy">Alım</SelectItem>
-                  <SelectItem value="sell">Satım</SelectItem>
+                  <SelectItem value="buy">{ t.buy}</SelectItem>
+                  <SelectItem value="sell">{ t.sell}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div>
-              <Label>Miktar</Label>
+              <Label>{ t.amount}</Label>
               <Input
                 type="number"
                 value={form.amount}
@@ -196,7 +200,7 @@ export default function TransactionForm() {
             </div>
 
             <div>
-              <Label>Birim Fiyat</Label>
+              <Label>{ t.unitPrice}</Label>
               <Input
                 type="number"
                 value={form.unitPrice}
@@ -205,7 +209,7 @@ export default function TransactionForm() {
             </div>
 
             <div>
-              <Label>Para Birimi</Label>
+              <Label>{ t.currency}</Label>
               <Select
                 value={form.currency}
                 onValueChange={(val) => handleChange("currency", val)}
@@ -222,7 +226,7 @@ export default function TransactionForm() {
             </div>
 
             <div>
-              <Label>Kur (→ TRY)</Label>
+              <Label>{ t.rate}(→ TRY)</Label>
               <Input
                 type="number"
                 value={form.exchangeRate}
@@ -231,7 +235,7 @@ export default function TransactionForm() {
             </div>
 
             <div>
-              <Label>İşlem Tarihi</Label>
+              <Label>{ t.transactionDate}</Label>
               <Input
                 type="datetime-local"
                 value={form.transactionDate}
@@ -250,7 +254,7 @@ export default function TransactionForm() {
             </div>
 
             <div>
-              <Label>İşlem Ücreti</Label>
+              <Label>{ t.transactionFee}</Label>
               <Input
                 type="number"
                 value={form.fee}
@@ -268,7 +272,7 @@ export default function TransactionForm() {
           </div>
 
           <Button onClick={handleSubmit} className="w-full">
-            İşlemi Kaydet
+            {t.save}
           </Button>
         </>
       )}

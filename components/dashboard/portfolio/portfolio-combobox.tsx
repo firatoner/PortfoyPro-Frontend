@@ -16,6 +16,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/context/LanguageContext";
+import { content } from "@/context/language-content";
 
 type Portfolio = {
   id: string | number;
@@ -35,6 +37,8 @@ export function PortfolioCombobox({
 }: PortfolioComboboxProps) {
   const [open, setOpen] = React.useState(false);
   const selected = portfolios.find((p) => p.id === selectedId);
+  const { language } = useLanguage();
+  const t = content[language]
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -52,7 +56,7 @@ export function PortfolioCombobox({
       <PopoverContent className="w-[200px] p-0">
         <Command>
           <CommandInput placeholder="Portföy ara..." />
-          <CommandEmpty>Portföy bulunamadı.</CommandEmpty>
+          <CommandEmpty>{t.noPortfolio}.</CommandEmpty>
           <CommandGroup>
             {portfolios.map((portfolio) => (
               <CommandItem

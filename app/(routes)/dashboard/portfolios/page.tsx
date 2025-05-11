@@ -28,6 +28,8 @@ import { toast } from "sonner";
 import { Pencil, Trash } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { content } from "@/context/language-content";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function MyPortfoliosPage() {
   const router = useRouter();
@@ -42,7 +44,8 @@ export default function MyPortfoliosPage() {
   const [currentPortfolio, setCurrentPortfolio] = useState<any>(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-
+  const { language } = useLanguage();
+  const t = content[language];
   const BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
   console.log("✅ BASE URL:", BASE);
 
@@ -127,8 +130,8 @@ export default function MyPortfoliosPage() {
   return (
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Portföylerim</h1>
-        <Button onClick={openCreateModal}>Portföy Ekle</Button>
+        <h1 className="text-2xl font-bold">{t.myPortfolio}</h1>
+        <Button onClick={openCreateModal}>{t.portfolioAdd}</Button>
       </div>
 
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
@@ -160,18 +163,15 @@ export default function MyPortfoliosPage() {
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Portföyü silmek istiyor musun?
-                    </AlertDialogTitle>
+                    <AlertDialogTitle>{t.deletePortfolio}</AlertDialogTitle>
                     <AlertDialogDescription>
-                      Bu işlem geri alınamaz. "{p.name}" portföyü kalıcı olarak
-                      silinecek.
+                      {t.deletePortfolioDescription}
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel>İptal</AlertDialogCancel>
+                    <AlertDialogCancel>{t.cancel}</AlertDialogCancel>
                     <AlertDialogAction onClick={() => handleDelete(p.id)}>
-                      Evet, Sil
+                      {t.yesDelete}
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
@@ -185,12 +185,12 @@ export default function MyPortfoliosPage() {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>
-              {isEditing ? "Portföyü Düzenle" : "Yeni Portföy"}
+              {isEditing ? t.editPortfolio : t.newPortfolio}
             </DialogTitle>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="name">Ad</Label>
+              <Label htmlFor="name">{t.name}</Label>
               <Input
                 id="name"
                 value={name}
@@ -198,7 +198,7 @@ export default function MyPortfoliosPage() {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="desc">Açıklama</Label>
+              <Label htmlFor="desc">{t.description}</Label>
               <Textarea
                 id="desc"
                 value={description}
