@@ -26,7 +26,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Pencil, Trash } from "lucide-react";
-import Link from "next/link";
+
 import { useRouter } from "next/navigation";
 import { content } from "@/context/language-content";
 import { useLanguage } from "@/context/LanguageContext";

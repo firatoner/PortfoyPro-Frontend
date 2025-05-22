@@ -10,6 +10,7 @@ import SinglePortfolioPie from "@/components/dashboard/portfolio/SinglePortfolio
 import { PortfolioCombobox } from "@/components/dashboard/portfolio/portfolio-combobox";
 import { useLanguage } from "@/context/LanguageContext";
 import { content } from "@/context/language-content";
+import TotalWalletChange from "@/components/dashboard/portfolio/TotalWalletChange";
 
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
@@ -23,7 +24,6 @@ export default function DashboardPage() {
   const [selectedPortfolio, setSelectedPortfolio] = useState<any>(null);
   const { language } = useLanguage();
   const t = content[language];
-
 
   const router = useRouter();
 
@@ -96,7 +96,7 @@ export default function DashboardPage() {
     loadAssets();
   }, [selectedPortfolio]);
 
-  if (loading) return <p>{ t.loading}</p>;
+  if (loading) return <p>{t.loading}</p>;
 
   return (
     <>
@@ -129,7 +129,23 @@ export default function DashboardPage() {
         </div>
       </div>
       {/* 3. Kutu: Alt bölüm */}
-      <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+      <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min">
+        <TotalWalletChange
+          data={[
+            {
+              id: "Cüzdan",
+              data: [
+                { x: "2025-05-01", y: 10000 },
+                { x: "2025-05-05", y: 11500 },
+                { x: "2025-05-10", y: 10800 },
+                { x: "2025-05-15", y: 12500 },
+                { x: "2025-05-20", y: 11800 },
+                { x: "2025-05-22", y: 13200 },
+              ],
+            },
+          ]}
+        />
+      </div>
     </>
   );
 }

@@ -64,6 +64,7 @@ resetPasswordDesc: "E-posta adresini gir, sana bir sıfırlama bağlantısı gö
     buy: "Alış",
     sell: "Satış",
     stocks: "Hisse Senetleri",
+    may:"Mayıs",
     crypto: "Kripto",
     bonds: "Tahvil/Bono",
     gold: "Altın",
@@ -150,6 +151,7 @@ resetPasswordDesc: "E-posta adresini gir, sana bir sıfırlama bağlantısı gö
 
     },
     
+    
    
         home:"Anasayfa",
      
@@ -193,16 +195,17 @@ resetPasswordDesc: "E-posta adresini gir, sana bir sıfırlama bağlantısı gö
     profile: "Profil",
     settings: "Ayarlar",
 
-
+  
 
 
 
   },
   en: {
+   
     loading:"Loading...",
      
        home:"Home",
-      
+      may:"May",
     myPortfolio: "My Portfolios",
     portfolioAdd: "Add Portfolio",
     editPortfolio: "Edit Portfolio",

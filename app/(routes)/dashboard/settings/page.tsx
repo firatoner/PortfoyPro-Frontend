@@ -23,7 +23,7 @@ import { content } from "@/context/language-content";
 export default function SettingsPage() {
   const { setTheme, theme } = useTheme();
   const { language, setLanguage } = useLanguage();
-const t=content[language]
+  const t = content[language];
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [saving, setSaving] = useState(false);
@@ -98,18 +98,17 @@ const t=content[language]
       {/* Tema Seçimi */}
       <Card>
         <CardHeader>
-          <CardTitle>{ t.themeSelection}</CardTitle>
+          <CardTitle>{t.themeSelection}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
-         
           <Select value={theme} onValueChange={handleThemeChange}>
             <SelectTrigger>
               <SelectValue placeholder={t.themeSelection} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="light">{ t.light}</SelectItem>
-              <SelectItem value="dark">{ t.dark}</SelectItem>
-              <SelectItem value="system">{ t.system}</SelectItem>
+              <SelectItem value="light">{t.light}</SelectItem>
+              <SelectItem value="dark">{t.dark}</SelectItem>
+              <SelectItem value="system">{t.system}</SelectItem>
             </SelectContent>
           </Select>
         </CardContent>
@@ -118,10 +117,9 @@ const t=content[language]
       {/* Dil Seçimi */}
       <Card>
         <CardHeader>
-          <CardTitle>{t.languageSelection }</CardTitle>
+          <CardTitle>{t.languageSelection}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
-         
           <Select value={language} onValueChange={handleLanguageChange}>
             <SelectTrigger>
               <SelectValue placeholder={t.languageSelection} />
@@ -137,10 +135,10 @@ const t=content[language]
       {/* Şifre Değiştirme */}
       <Card>
         <CardHeader>
-          <CardTitle>{ t.changepassword}</CardTitle>
+          <CardTitle>{t.changepassword}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
-          <Label htmlFor="newPassword">{t.newPassword }</Label>
+          <Label htmlFor="newPassword">{t.newPassword}</Label>
           <Input
             id="newPassword"
             type="password"
@@ -148,7 +146,9 @@ const t=content[language]
             onChange={(e) => setNewPassword(e.target.value)}
           />
 
-          <Label htmlFor="confirmPassword">{t.newPassword} ({t.again})</Label>
+          <Label htmlFor="confirmPassword">
+            {t.newPassword} ({t.again})
+          </Label>
           <Input
             id="confirmPassword"
             type="password"
@@ -157,7 +157,7 @@ const t=content[language]
           />
 
           <Button onClick={handleChangePassword} disabled={saving}>
-    {t.change}
+            {t.change}
           </Button>
         </CardContent>
       </Card>
