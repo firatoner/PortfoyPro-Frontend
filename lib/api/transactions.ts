@@ -28,3 +28,15 @@ export async function getTransactionsByAssetId(assetId: number) {
 
   return data;
 }
+
+// Tüm işlemleri getir
+export async function getAllTransactions() {
+  const res = await fetch("/api/transactions");
+  if (!res.ok) throw new Error("İşlemler alınamadı");
+  const data = await res.json();
+  if (!Array.isArray(data)) {
+    console.error("Hatalı veri formatı:", data);
+    return [];
+  }
+  return data;
+}

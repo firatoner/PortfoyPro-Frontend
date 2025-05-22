@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { getAssetsByPortfolioId } from "@/lib/api/assets";
+import { getAssetsByPortfolioId, updateOrCreateAsset } from "@/lib/api/assets";
 import { getMyPortfolios } from "@/app/api/portfolios/route";
 import { createTransaction } from "@/lib/api/transactions";
 import { TransactionHistoryModal } from "./TransactionHistoryModal";
@@ -28,6 +28,7 @@ type Portfolio = {
 type Asset = {
   id: number;
   name: string;
+  symbol: string;
 };
 
 export default function TransactionForm() {
@@ -50,6 +51,9 @@ export default function TransactionForm() {
     fee: "",
     assetId: "",
   });
+  const [newAssetSymbol, setNewAssetSymbol] = useState("");
+  const [addingNewAsset, setAddingNewAsset] = useState(false);
+  const [newAssetCurrency, setNewAssetCurrency] = useState(form.currency || "TRY");
 
   useEffect(() => {
     async function fetchPortfolios() {
@@ -68,6 +72,7 @@ export default function TransactionForm() {
       if (!selectedPortfolio) return;
       try {
         const res = await getAssetsByPortfolioId(Number(selectedPortfolio.id));
+        console.log("API'dan gelen assetler:", res);
         setAssets(res || []);
       } catch (err) {
         console.error("Varlıklar alınamadı", err);
@@ -84,10 +89,54 @@ export default function TransactionForm() {
     try {
       const totalPrice = Number(form.amount) * Number(form.unitPrice);
       const totalPriceTry = totalPrice * Number(form.exchangeRate);
-
+      let assetId = form.assetId;
+      let assetSymbol = "";
+      let assetName = "";
+      // Eğer yeni varlık ekleniyorsa
+      if ((assets.length === 0 || addingNewAsset) && newAssetSymbol) {
+        // Asset'i oluştur
+        const createdAsset = await updateOrCreateAsset({
+          symbol: newAssetSymbol,
+          type: "stock",
+          amount: Number(form.amount),
+          buyPrice: Number(form.unitPrice),
+          currency: newAssetCurrency,
+          note: form.note,
+          portfolioId: Number(selectedPortfolio?.id),
+          name: newAssetSymbol,
+        }, assets);
+        
+        // Asset listesini güncelle ve assetId'yi bul
+        const updatedAssets = await getAssetsByPortfolioId(Number(selectedPortfolio?.id));
+        setAssets(updatedAssets);
+        const found = updatedAssets.find((a: Asset) => a.symbol === newAssetSymbol);
+        assetId = found ? String(found.id) : "";
+        assetSymbol = newAssetSymbol;
+        assetName = newAssetSymbol;
+      } else {
+        // Mevcut asset ile işlem
+        const asset = assets.find((a: Asset) => String(a.id) === form.assetId);
+        assetSymbol = asset?.symbol || asset?.name || "";
+        assetName = asset?.name || asset?.symbol || "";
+        // Asset miktarını güncelle
+        if (asset) {
+          await updateOrCreateAsset({
+            symbol: assetSymbol,
+            type: "stock",
+            amount: Number(form.amount),
+            buyPrice: Number(form.unitPrice),
+            currency: form.currency,
+            note: form.note,
+            portfolioId: Number(selectedPortfolio?.id),
+            name: assetName,
+          }, assets);
+        }
+      }
+      // Transaction'ı kaydet
       await createTransaction({
         ...form,
-        portfolioId: selectedPortfolio?.id,
+        assetId: Number(assetId),
+        portfolioId: Number(selectedPortfolio?.id),
         amount: Number(form.amount),
         unitPrice: Number(form.unitPrice),
         exchangeRate: Number(form.exchangeRate),
@@ -95,7 +144,6 @@ export default function TransactionForm() {
         totalPrice,
         totalPriceTry,
       });
-
       toast.success("İşlem başarıyla eklendi!");
       setForm((prev) => ({
         ...prev,
@@ -103,13 +151,20 @@ export default function TransactionForm() {
         unitPrice: "",
         fee: "",
         note: "",
+        assetId: assetId,
       }));
+      setNewAssetSymbol("");
+      setAddingNewAsset(false);
     } catch (erro) {
       toast.error("İşlem eklenemedi!");
     }
   };
 
   return (
+    <>
+    <div className="flex justify-end">
+    <TransactionHistoryModal assets={assets} />
+      </div>
     <div className="space-y-4 border p-4 rounded-xl shadow-lg bg-background">
      
 
@@ -136,42 +191,96 @@ export default function TransactionForm() {
         </Select>
       </div>
 
-      {/* Eğer seçili portföy varsa diğer alanları göster */}
+   
       {selectedPortfolio && (
         <>
-          {form.assetId && (
-            <div className="flex justify-end mt-2">
-              <TransactionHistoryModal
-                assetId={parseInt(form.assetId)}
-                assetName={
-                  assets.find((a) => String(a.id) === form.assetId)?.name ||
-                  "Seçilen varlık"
-                }
-              />
-            </div>
-          )}
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Asset Seçimi */}
             <div>
               <Label>{t.asset}</Label>
-              <Select onValueChange={(val) => handleChange("assetId", val)}>
-                <SelectTrigger>
-                  <SelectValue
-                    placeholder={t.selectAsset}
-                    defaultValue={form.assetId}
+              {assets.length === 0 || addingNewAsset ? (
+                <div className="flex gap-2 items-center">
+                  <Input
+                    placeholder="BIST100, AAPL, ..."
+                    value={newAssetSymbol}
+                    onChange={e => setNewAssetSymbol(e.target.value.toUpperCase())}
+                    className="w-full"
+                  />
+                  <Select
+                    value={newAssetCurrency}
+                    onValueChange={setNewAssetCurrency}
                   >
-                    {assets.find((a) => String(a.id) === form.assetId)?.name}
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  {assets.map((a) => (
-                    <SelectItem key={a.id} value={String(a.id)}>
-                      {a.name}
+                    <SelectTrigger className="w-24" />
+                    <SelectContent>
+                      <SelectItem value="TRY">TRY</SelectItem>
+                      <SelectItem value="USD">USD</SelectItem>
+                      <SelectItem value="EUR">EUR</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={async () => {
+                      if (!newAssetSymbol) return;
+                      const createdAsset = await updateOrCreateAsset({
+                        symbol: newAssetSymbol,
+                        type: "stock",
+                        amount: Number(form.amount) || 0.0001,
+                        buyPrice: Number(form.unitPrice) || 1,
+                        currency: newAssetCurrency,
+                        note: form.note,
+                        portfolioId: Number(selectedPortfolio?.id),
+                        name: newAssetSymbol,
+                      }, assets);
+                      // Asset listesini güncelle ve assetId'yi bul
+                      const updatedAssets = await getAssetsByPortfolioId(Number(selectedPortfolio?.id));
+                      setAssets(updatedAssets);
+                      const found = updatedAssets.find((a: Asset) => a.symbol === newAssetSymbol);
+                      if (found) {
+                        setForm((prev) => ({ ...prev, assetId: String(found.id) }));
+                      }
+                      setAddingNewAsset(false);
+                      setNewAssetSymbol("");
+                    }}
+                  >
+                    Ekle
+                  </Button>
+                  {assets.length > 0 && (
+                    <Button type="button" variant="ghost" onClick={() => { setAddingNewAsset(false); setNewAssetSymbol(""); }}>
+                      {t.selectAsset}
+                    </Button>
+                  )}
+                </div>
+              ) : (
+                <Select
+                  value={form.assetId}
+                  onValueChange={(val) => {
+                    if (val === "__new__") {
+                      setAddingNewAsset(true);
+                      setNewAssetSymbol("");
+                    } else {
+                      handleChange("assetId", val);
+                      setAddingNewAsset(false);
+                      setNewAssetSymbol("");
+                    }
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue
+                      placeholder={t.selectAsset}
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {assets.map((a: Asset) => (
+                      <SelectItem key={a.id} value={String(a.id)}>
+                        {a.name || a.symbol}
+                      </SelectItem>
+                    ))}
+                    <SelectItem value="__new__">
+                      + Yeni Varlık Ekle
                     </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                  </SelectContent>
+                </Select>
+              )}
             </div>
 
             <div>
@@ -277,5 +386,6 @@ export default function TransactionForm() {
         </>
       )}
     </div>
+    </>
   );
 }

@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { getTransactionsByAssetId } from "@/lib/api/transactions";
+import { getAllTransactions } from "@/lib/api/transactions";
 
 type Transaction = {
   id: number;
@@ -23,31 +23,26 @@ type Transaction = {
   note?: string;
 };
 
-type Props = {
-  assetId: number;
-  assetName: string;
-};
-
-export function TransactionHistoryModal({ assetId, assetName }: Props) {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+export function TransactionHistoryModal({ assets }: { assets: { id: number; name?: string; symbol: string }[] }) {
+  const [transactions, setTransactions] = useState<any[]>([]);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (open) {
-      getTransactionsByAssetId(assetId)
+      getAllTransactions()
         .then(setTransactions)
         .catch(console.error);
     }
-  }, [open, assetId]);
+  }, [open]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">📜 Geçmiş İşlemler</Button>
+        <Button variant="outline">📜 Tüm Geçmiş İşlemler</Button>
       </DialogTrigger>
       <DialogContent className="max-w-4xl">
         <DialogHeader>
-          <DialogTitle>{assetName} – Geçmiş İşlemler</DialogTitle>
+          <DialogTitle>Tüm Geçmiş İşlemler</DialogTitle>
         </DialogHeader>
 
         {transactions.length === 0 ? (
@@ -57,31 +52,22 @@ export function TransactionHistoryModal({ assetId, assetName }: Props) {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b">
-                  <th className="text-left p-2">Tarih</th>
+                  <th className="text-left p-2">Varlık</th>
+                  <th className="text-left p-2">Fiyat</th>
                   <th className="text-left p-2">Tür</th>
-                  <th className="text-left p-2">Miktar</th>
-                  <th className="text-left p-2">Birim Fiyat</th>
-                  <th className="text-left p-2">Para Birimi</th>
-                  <th className="text-left p-2">Platform</th>
-                  <th className="text-left p-2">Not</th>
                 </tr>
               </thead>
               <tbody>
-                {transactions.map((tx) => (
-                  <tr key={tx.id} className="border-b hover:bg-muted">
-                    <td className="p-2">
-                      {new Date(tx.transactionDate).toLocaleString("tr-TR")}
-                    </td>
-                    <td className="p-2">
-                      {tx.type === "buy" ? "Alım" : "Satım"}
-                    </td>
-                    <td className="p-2">{tx.amount}</td>
-                    <td className="p-2">{tx.unitPrice}</td>
-                    <td className="p-2">{tx.currency}</td>
-                    <td className="p-2">{tx.platform || "-"}</td>
-                    <td className="p-2">{tx.note || "-"}</td>
-                  </tr>
-                ))}
+                {transactions.map((tx) => {
+                  const asset = assets.find((a) => a.id === tx.assetId);
+                  return (
+                    <tr key={tx.id} className="border-b hover:bg-muted">
+                      <td className="p-2">{asset?.name || asset?.symbol || tx.assetId}</td>
+                      <td className="p-2">{tx.unitPrice}</td>
+                      <td className="p-2">{tx.type === "buy" ? "Alım" : "Satım"}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

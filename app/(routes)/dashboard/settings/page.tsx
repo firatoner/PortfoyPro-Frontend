@@ -104,7 +104,7 @@ const t=content[language]
          
           <Select value={theme} onValueChange={handleThemeChange}>
             <SelectTrigger>
-              <SelectValue placeholder={"Tema Seçin"} />
+              <SelectValue placeholder={t.themeSelection} />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="light">{ t.light}</SelectItem>
@@ -124,7 +124,7 @@ const t=content[language]
          
           <Select value={language} onValueChange={handleLanguageChange}>
             <SelectTrigger>
-              <SelectValue placeholder={"Dil Seçin"} />
+              <SelectValue placeholder={t.languageSelection} />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="tr">Türkçe</SelectItem>
