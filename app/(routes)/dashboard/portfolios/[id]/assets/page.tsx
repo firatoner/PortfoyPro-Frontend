@@ -57,7 +57,7 @@ export default function AssetsPage() {
   const [exchangeRates, setExchangeRates] = useState<any>(null);
   const [selected, setSelected] = useState<{ [key: string]: boolean }>({});
   const [amounts, setAmounts] = useState<{ [key: string]: number }>({});
-  const { language } = useLanguage():
+  const { language } = useLanguage();
   const t = content[language];
 
   useEffect(() => {
@@ -164,7 +164,7 @@ export default function AssetsPage() {
       case "USD":
         return amount * buyPrice * rates.TRY;
       case "EUR":
-        return amount * buyPrice * rates.TRY; 
+        return amount * buyPrice * rates.TRY;
       default:
         return 0;
     }
@@ -181,19 +181,19 @@ export default function AssetsPage() {
       )}
 
       {loading ? (
-        <p>{ t.loading}</p>
+        <p>{t.loading}</p>
       ) : (
         <>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
               <Button className="mb-4" onClick={handleLiveAssetModalOpen}>
-               {t.addAsset}
+                {t.addAsset}
               </Button>
             </DialogTrigger>
 
             <DialogContent>
               <DialogHeader>
-                  <DialogTitle>{ t.wantToAdd}</DialogTitle>
+                <DialogTitle>{t.wantToAdd}</DialogTitle>
               </DialogHeader>
 
               <div className="space-y-4">
@@ -248,14 +248,14 @@ export default function AssetsPage() {
                   className="w-full mt-2"
                   onClick={handleCreateSelectedAssets}
                 >
-                {t.addSelectedAssets}
+                  {t.addSelectedAssets}
                 </Button>
               </div>
             </DialogContent>
           </Dialog>
 
           {assets.length === 0 ? (
-              <p>{ t.thereNoAssets}</p>
+            <p>{t.thereNoAssets}</p>
           ) : (
             <ul className="space-y-2">
               {assets.map((a) => (
@@ -299,17 +299,15 @@ export default function AssetsPage() {
                       </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
-                          <AlertDialogTitle>
-                           {t.deleteAsset}
-                          </AlertDialogTitle>
+                          <AlertDialogTitle>{t.deleteAsset}</AlertDialogTitle>
                           <AlertDialogDescription>
                             {t.deleteAssetDescription}
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel>{ t.cancel}</AlertDialogCancel>
+                          <AlertDialogCancel>{t.cancel}</AlertDialogCancel>
                           <AlertDialogAction onClick={() => handleDelete(a.id)}>
-                           {t.yesDelete}
+                            {t.yesDelete}
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>
@@ -327,7 +325,7 @@ export default function AssetsPage() {
           >
             <DialogContent>
               <DialogHeader>
-                  <DialogTitle>{ t.editAsset}</DialogTitle>
+                <DialogTitle>{t.editAsset}</DialogTitle>
               </DialogHeader>
 
               {editingAsset && (
@@ -361,7 +359,7 @@ export default function AssetsPage() {
                       }
                     }}
                   >
-                   {t.save}
+                    {t.save}
                   </Button>
                 </div>
               )}

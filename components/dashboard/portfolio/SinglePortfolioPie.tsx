@@ -11,11 +11,9 @@ const ResponsivePie = dynamic(
 
 export default function SinglePortfolioPie({ data }: { data: any[] }) {
   const { language } = useLanguage();
-  const t = content[language]
+  const t = content[language];
   if (!data.length)
-    return (
-      <p className="text-muted-foreground mt-4">{t.selectPortfolio}</p>
-    );
+    return <p className="text-muted-foreground mt-4">{t.selectPortfolio}</p>;
 
   return (
     <ResponsivePie
