@@ -1,10 +1,8 @@
 "use client";
-
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   getAssetsByPortfolioId,
-  createAsset,
   deleteAsset,
   updateAsset,
 } from "@/lib/api/assets";
@@ -35,6 +33,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useLanguage } from "@/context/LanguageContext";
 import { content } from "@/context/language-content";
+import { getLiveCryptoRates } from "@/lib/api/crypto";
 
 type Asset = {
   id: number;
@@ -60,6 +59,67 @@ export default function AssetsPage() {
   const { language } = useLanguage();
   const t = content[language];
 
+  // portfolios/[id]/assets/page.tsx
+  const SUPPORTED_CURRENCIES = [
+    "USD",
+    "EUR",
+    "TRY",
+    "GBP",
+    "JPY",
+    "CAD",
+    "AUD",
+    // İleride gerekiyorsa buraya başka kodlar da ekleyebilirsin
+  ];
+  const [cryptoRates, setCryptoRates] = useState<Record<string, number> | null>(
+    null
+  );
+  const [cryptoSelected, setCryptoSelected] = useState<Record<string, boolean>>(
+    {}
+  );
+  const [cryptoAmounts, setCryptoAmounts] = useState<Record<string, number>>(
+    {}
+  );
+  const [cryptoDialogOpen, setCryptoDialogOpen] = useState(false);
+
+  const handleCryptoModalOpen = async () => {
+    const rates = await getLiveCryptoRates();
+    setCryptoRates(rates);
+    setCryptoDialogOpen(true);
+  };
+
+  const handleCreateSelectedCryptos = async () => {
+    try {
+      const entries = Object.entries(cryptoSelected).filter(([_, v]) => v);
+      const existing = await getAssetsByPortfolioId(portfolioId);
+
+      for (const [symbol] of entries) {
+        // Burada name ekliyoruz
+        await updateOrCreateAsset(
+          {
+            symbol,
+            type: "crypto",
+            amount: cryptoAmounts[symbol] || 1,
+            buyPrice: cryptoRates![symbol],
+            currency: "TRY",
+            note: "",
+            portfolioId: Number(portfolioId),
+            name: symbol, // ← EKLENDİ
+          },
+          existing
+        );
+      }
+
+      const updated = await getAssetsByPortfolioId(portfolioId);
+      setAssets(updated);
+      setCryptoDialogOpen(false);
+      setCryptoSelected({});
+      setCryptoAmounts({});
+    } catch (err) {
+      console.error("Varlık oluşturma hatası:", err);
+      setError("Seçilen kripto eklenemedi.");
+    }
+  };
+
   useEffect(() => {
     if (!portfolioId) return;
 
@@ -83,13 +143,10 @@ export default function AssetsPage() {
   const handleCreateSelectedAssets = async () => {
     try {
       const entries = Object.entries(selected).filter(([_, v]) => v);
-
       const existing = await getAssetsByPortfolioId(portfolioId);
-      const getBuyPrice = (code: string) => {
-        if (code === "USD") return exchangeRates.TRY;
-        if (code === "EUR") return exchangeRates.TRY / exchangeRates.EUR;
-        return 1; // TRY
-      };
+
+      const getBuyPrice = (code: string) =>
+        code === "TRY" ? 1 : exchangeRates!.TRY / exchangeRates![code];
 
       for (const [code] of entries) {
         await updateOrCreateAsset(
@@ -97,21 +154,23 @@ export default function AssetsPage() {
             symbol: code,
             type: "currency",
             amount: amounts[code] || 1,
-            buyPrice: getBuyPrice(code), // ✅ TL bazlı
-            currency: "TRY", // ✅ Ana para birimi TL
+            buyPrice: getBuyPrice(code),
+            currency: "TRY",
             note: "",
             portfolioId: Number(portfolioId),
+            name: code, // ← BURAYA DA EKLEYİN
           },
           existing
         );
       }
 
-      const updated = await getAssetsByPortfolioId(Number(portfolioId));
+      const updated = await getAssetsByPortfolioId(portfolioId);
       setAssets(updated);
       setDialogOpen(false);
-      setError(null);
+      setSelected({});
+      setAmounts({});
     } catch (err) {
-      console.error(err);
+      console.error("Varlık oluşturma hatası:", err);
       setError("Seçilen varlıklar eklenemedi.");
     }
   };
@@ -186,71 +245,117 @@ export default function AssetsPage() {
         <>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="mb-4" onClick={handleLiveAssetModalOpen}>
-                {t.addAsset}
+              <Button onClick={handleLiveAssetModalOpen}>
+                {" "}
+                {t.addCurrency}{" "}
               </Button>
             </DialogTrigger>
-
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>{t.wantToAdd}</DialogTitle>
               </DialogHeader>
-
               <div className="space-y-4">
-                {["USD", "EUR", "TRY"].map((code) => (
+                {SUPPORTED_CURRENCIES.map((code) => (
                   <div key={code} className="flex items-center gap-4">
                     <Checkbox
                       id={code}
                       checked={selected[code] || false}
-                      onCheckedChange={(checked) =>
-                        setSelected((prev) => ({ ...prev, [code]: !!checked }))
+                      onCheckedChange={(c) =>
+                        setSelected((p) => ({ ...p, [code]: !!c }))
                       }
                     />
                     <label htmlFor={code} className="w-12">
                       {code}
                     </label>
                     <span className="text-sm text-gray-500">
-                      {code === "USD" &&
-                        exchangeRates?.TRY?.toLocaleString("tr-TR", {
-                          style: "currency",
-                          currency: "TRY",
-                        })}
-                      {code === "EUR" &&
-                        (
-                          exchangeRates?.TRY / exchangeRates?.EUR
-                        )?.toLocaleString("tr-TR", {
-                          style: "currency",
-                          currency: "TRY",
-                        })}
-                      {code === "TRY" &&
-                        (1).toLocaleString("tr-TR", {
-                          style: "currency",
-                          currency: "TRY",
-                        })}
+                      {(code === "TRY"
+                        ? 1
+                        : exchangeRates?.TRY / exchangeRates?.[code]
+                      )?.toLocaleString("tr-TR", {
+                        style: "currency",
+                        currency: "TRY",
+                      })}
                     </span>
-
                     <Input
                       type="number"
                       placeholder={t.amount}
                       className="w-24"
                       value={amounts[code] || ""}
                       onChange={(e) =>
-                        setAmounts((prev) => ({
-                          ...prev,
+                        setAmounts((p) => ({
+                          ...p,
                           [code]: Number(e.target.value),
                         }))
                       }
                     />
                   </div>
                 ))}
-
                 <Button
                   className="w-full mt-2"
                   onClick={handleCreateSelectedAssets}
                 >
-                  {t.addSelectedAssets}
+                  {t.addWantCurrency}
                 </Button>
               </div>
+            </DialogContent>
+          </Dialog>
+
+          <Dialog open={cryptoDialogOpen} onOpenChange={setCryptoDialogOpen}>
+            <DialogTrigger asChild>
+              <Button variant="outline" onClick={handleCryptoModalOpen}>
+                {t.addCrypto}
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-h-[70vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>{t.addWantCrypto}</DialogTitle>
+              </DialogHeader>
+
+              <div className="grid grid-cols-2 gap-4">
+                {cryptoRates ? (
+                  Object.entries(cryptoRates).map(([symbol, price]) => (
+                    <div key={symbol} className="flex items-center gap-4">
+                      <Checkbox
+                        id={`c-${symbol}`}
+                        checked={cryptoSelected[symbol] || false}
+                        onCheckedChange={(c) =>
+                          setCryptoSelected((p) => ({ ...p, [symbol]: !!c }))
+                        }
+                      />
+                      <label htmlFor={`c-${symbol}`} className="w-12">
+                        {symbol}
+                      </label>
+                      <span className="text-sm text-gray-500">
+                        {price.toLocaleString("tr-TR", {
+                          style: "currency",
+                          currency: "TRY",
+                        })}
+                      </span>
+                      <Input
+                        type="number"
+                        placeholder={t.amount}
+                        className="w-24"
+                        value={cryptoAmounts[symbol] || ""}
+                        onChange={(e) =>
+                          setCryptoAmounts((p) => ({
+                            ...p,
+                            [symbol]: Number(e.target.value),
+                          }))
+                        }
+                      />
+                    </div>
+                  ))
+                ) : (
+                  <p>Yükleniyor…</p>
+                )}
+              </div>
+
+              <Button
+                className="w-full mt-4"
+                onClick={handleCreateSelectedCryptos}
+              >
+                {t.addCrypto}
+              </Button>
             </DialogContent>
           </Dialog>
 
@@ -265,21 +370,41 @@ export default function AssetsPage() {
                 >
                   <div>
                     <div className="font-semibold">{a.symbol}</div>
-                    <div className="text-sm text-gray-500">
-                      {Number(a.amount).toLocaleString("tr-TR", {
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 2,
-                      })}
-                      {a.symbol === "USD"
-                        ? "$"
-                        : a.symbol === "EUR"
-                        ? "€"
-                        : "₺"}{" "}
-                      ={" "}
-                      {convertToTRY(a, exchangeRates).toLocaleString("tr-TR", {
-                        style: "currency",
-                        currency: "TRY",
-                      })}
+                    <div className="text-sm text-gray-500 flex items-center gap-1">
+                      {/* 1) Orijinal varlığın miktarını, sembolü ve pozisyonunu doğru formatla */}
+                      <span>
+                        {a.symbol === "USD" && /* USD’de sembol başa */ "$"}
+                        {a.symbol === "EUR" && /* EUR’da sembol başa */ "€"}
+                        {a.symbol !== "USD" &&
+                        a.symbol !==
+                          "EUR" /* diğer (crypto/GBP…) için miktar-sonra sembol */
+                          ? `${Number(a.amount).toLocaleString("tr-TR", {
+                              minimumFractionDigits: 0,
+                              maximumFractionDigits: 2,
+                            })} ${a.symbol}`
+                          : /* USD/EUR sonrası miktar */
+                            Number(a.amount).toLocaleString("tr-TR", {
+                              minimumFractionDigits: 0,
+                              maximumFractionDigits: 2,
+                            })}
+                        {a.symbol ===
+                          "USD" /* USD’de miktardan sonra sembol değil ama burada sonradan ekleme yapılmaması için boş bırakılıyor */ &&
+                          ""}
+                        {a.symbol === "EUR" && ""}
+                      </span>
+
+                      <span>=</span>
+
+                      {/* 2) TRY karşılığını göster */}
+                      <span>
+                        {convertToTRY(a, exchangeRates).toLocaleString(
+                          "tr-TR",
+                          {
+                            style: "currency",
+                            currency: "TRY",
+                          }
+                        )}
+                      </span>
                     </div>
                   </div>
 

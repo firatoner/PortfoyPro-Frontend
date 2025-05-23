@@ -194,14 +194,19 @@ resetPasswordDesc: "E-posta adresini gir, sana bir sıfırlama bağlantısı gö
     languageSelection:"Dil Seçimi",
     profile: "Profil",
     settings: "Ayarlar",
-
-  
+    addCrypto: "Kripto Para Ekle",
+    addCurrency: "Döviz Ekle",
+   addWantCrypto: "Eklemek istediğiniz kripto paraları seçin",
+    addWantCurrency: "Eklemek istediğiniz dövizleri seçin",
 
 
 
   },
   en: {
-   
+   addCrypto: "Add Crypto",
+    addCurrency: "Add Currency",
+    addWantCrypto: "Select the cryptocurrencies you want to add",
+    addWantCurrency: "Select the currencies you want to add",
     loading:"Loading...",
      
        home:"Home",

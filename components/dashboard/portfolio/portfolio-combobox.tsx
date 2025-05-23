@@ -55,7 +55,7 @@ export function PortfolioCombobox({
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Portföy ara..." />
+          <CommandInput placeholder={t.selectPortfolio} />
           <CommandEmpty>{t.noPortfolio}.</CommandEmpty>
           <CommandGroup>
             {portfolios.map((portfolio) => (

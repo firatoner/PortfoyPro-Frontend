@@ -200,7 +200,7 @@ export default function TransactionForm() {
               {assets.length === 0 || addingNewAsset ? (
                 <div className="flex gap-2 items-center">
                   <Input
-                    placeholder="BIST100, AAPL, ..."
+                  
                     value={newAssetSymbol}
                     onChange={e => setNewAssetSymbol(e.target.value.toUpperCase())}
                     className="w-full"
