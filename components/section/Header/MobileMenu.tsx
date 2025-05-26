@@ -5,6 +5,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { content } from "@/context/language-content";
 import { ThemeToggle } from "@/components/important/ThemeToggle";
 import LanguageSelector from "@/components/important/LanguageSelector";
+import { Button } from "@/components/ui/button";
 
 interface MobileMenuProps {
   onClose: () => void;
@@ -15,26 +16,31 @@ export default function MobileMenu({ onClose }: MobileMenuProps) {
   const t = content[language];
 
   return (
-    <div className=" bg-white dark:bg-black border-t border-black dark:border-white  px-4 py-4 space-y-4">
-      <Link
-        href="/auth/login"
-        className="block text-sm font-medium text-white bg-black hover:bg-gray-950 dark:bg-white dark:text-black dark:hover:bg-gray-300 transition-colors px-4 py-2 rounded-md"
+    <div className="fixed inset-0 z-50 flex flex-col justify-end">
+      {/* backdrop */}
+      <div
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
-      >
-        {t.signIn}
-      </Link>
+      />
 
-      <Link
-        href="/auth/register"
-        className="block text-sm font-medium text-white bg-black hover:bg-gray-950 dark:bg-white dark:text-black dark:hover:bg-gray-300 transition-colors px-4 py-2 rounded-md"
-        onClick={onClose}
-      >
-        {t.signUp}
-      </Link>
+      {/* sheet */}
+      <div className="relative bg-white dark:bg-gray-900 rounded-t-2xl p-6 space-y-6 shadow-xl">
+        <Button asChild size="lg" className="w-full">
+          <Link href="/auth/login" onClick={onClose}>
+            {t.signIn}
+          </Link>
+        </Button>
 
-      <div className="flex items-center justify-between">
-        <LanguageSelector />
-        <ThemeToggle />
+        <Button asChild variant="outline" size="lg" className="w-full">
+          <Link href="/auth/register" onClick={onClose}>
+            {t.signUp}
+          </Link>
+        </Button>
+
+        <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+          <LanguageSelector />
+          <ThemeToggle />
+        </div>
       </div>
     </div>
   );

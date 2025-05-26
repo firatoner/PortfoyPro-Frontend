@@ -1,19 +1,41 @@
-
 "use client";
 
 import { useLanguage } from "@/context/LanguageContext";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 
 export default function LanguageSelector() {
   const { language, setLanguage } = useLanguage();
 
+  const label = language === "tr" ? "TR" : "EN";
+
   return (
-    <select
-      onChange={(e) => setLanguage(e.target.value as "tr" | "en")}
-      value={language}
-      className="border-2 px-2 py-1 text-sm bg-black text-white dark:bg-white dark:text-black rounded"
-    >
-      <option value="tr">Türkçe</option>
-      <option value="en">English</option>
-    </select>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="sm" className="rounded-full px-3">
+          {label}
+          <span className="sr-only">Select language</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem
+          onClick={() => setLanguage("tr")}
+          className={language === "tr" ? "font-semibold" : ""}
+        >
+          TR — Türkçe
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => setLanguage("en")}
+          className={language === "en" ? "font-semibold" : ""}
+        >
+          EN — English
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

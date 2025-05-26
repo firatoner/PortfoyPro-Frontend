@@ -21,6 +21,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { content } from "@/context/language-content";
 
 export default function SettingsPage() {
+  const [mounted, setMounted] = useState(false);
   const { setTheme, theme } = useTheme();
   const { language, setLanguage } = useLanguage();
   const t = content[language];
@@ -31,6 +32,9 @@ export default function SettingsPage() {
     type: "success" | "error";
     text: string;
   }>(null);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   useEffect(() => {
     if (message) {
       const timer = setTimeout(() => {
@@ -72,7 +76,9 @@ export default function SettingsPage() {
       setConfirmPassword("");
     }
   };
-
+  if (!mounted) {
+    return <div className="p-4 max-w-2xl space-y-6">Yükleniyor…</div>;
+  }
   return (
     <div className="p-4 max-w-2xl space-y-6">
       {/* Mesaj gösterimi */}

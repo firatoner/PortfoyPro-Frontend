@@ -26,6 +26,8 @@ export default function Navbar() {
         </div>
 
         <div className="hidden md:flex items-center gap-4">
+          <LanguageSelector />
+          <ThemeToggle />
           <Link
             href="/auth/login"
             className="text-sm font-medium text-white bg-black hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 transition-colors px-4 py-2 rounded-md"
@@ -39,9 +41,6 @@ export default function Navbar() {
           >
             {t.signUp}
           </Link>
-
-          <LanguageSelector />
-          <ThemeToggle />
         </div>
 
         <div className="md:hidden">

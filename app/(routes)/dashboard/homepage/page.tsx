@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
-import { getMyPortfolios } from "@/app/api/portfolios/route";
+import { getMyPortfolios } from "@/lib/api/services/portfolios";
 import { getAssetsByPortfolioId } from "@/lib/api/assets";
 import AllPortfoliosPie from "@/components/dashboard/portfolio/AllPortfoliosPie";
 import SinglePortfolioPie from "@/components/dashboard/portfolio/SinglePortfolioPie";

@@ -4,7 +4,7 @@ import Footer from "@/components/section/Footer/page";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 import { content } from "@/context/language-content";
-import { Tooltip, TooltipProvider } from "@radix-ui/react-tooltip";
+
 import { Area, AreaChart, Legend, XAxis, YAxis } from "recharts";
 import {
   ResponsiveContainer,
@@ -42,30 +42,29 @@ export default function Home() {
     return null;
   };
   const pieData = [
-    { name: t.stocks, value: 45, color: "#4F46E5" },
     { name: t.crypto, value: 25, color: "#22C55E" },
-    { name: t.bonds, value: 15, color: "#F59E0B" },
-    { name: t.gold, value: 10, color: "#EC4899" },
+
+    { name: t.currency2, value: 10, color: "#EC4899" },
     { name: t.cash, value: 5, color: "#8B5CF6" },
   ];
 
   const transactions = [
     {
-      asset: "THYAO",
+      asset: "Euro",
       type: t.buy,
-      amount: "₺5.250,78",
+      amount: "₺5.250",
       date: `12 ${t.may} 2025`,
     },
     {
       asset: "Bitcoin",
       type: t.sell,
-      amount: "$1.000.000,00",
+      amount: "$97.568",
       date: `10 ${t.may} 2025`,
     },
     {
-      asset: "EREGL",
+      asset: "Atom",
       type: t.buy,
-      amount: "₺3.120,25",
+      amount: "₺40.120",
       date: `5 ${t.may} 2025`,
     },
   ];

@@ -91,13 +91,31 @@ export default function Footer() {
       <div className="mt-10 border-t dark:border-gray-700 pt-6 text-sm text-center">
         <p className="mb-6">{t.footerText}</p>
         <div className="flex justify-center gap-4 text-lg text-gray-600 dark:text-gray-400">
-          <a href="#" aria-label="Facebook" className="hover:text-blue-500">
+          <a
+            href="https://www.github.com/"
+            aria-label="Facebook"
+            className="hover:text-blue-500"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <FaGithub />
           </a>
-          <a href="#" aria-label="Twitter" className="hover:text-blue-400">
+          <a
+            href="https://www.x.com/"
+            aria-label="Twitter"
+            className="hover:text-blue-400"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <FaTwitterSquare />
           </a>
-          <a href="#" aria-label="Instagram" className="hover:text-pink-500">
+          <a
+            href="https://www.linkedin.com/"
+            aria-label="Instagram"
+            className="hover:text-pink-500"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <FaLinkedin />
           </a>
         </div>

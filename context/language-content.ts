@@ -64,6 +64,7 @@ resetPasswordDesc: "E-posta adresini gir, sana bir sıfırlama bağlantısı gö
     buy: "Alış",
     sell: "Satış",
     stocks: "Hisse Senetleri",
+    currency2: "Döviz",
     may:"Mayıs",
     crypto: "Kripto",
     bonds: "Tahvil/Bono",
@@ -203,6 +204,7 @@ resetPasswordDesc: "E-posta adresini gir, sana bir sıfırlama bağlantısı gö
 
   },
   en: {
+    currency2: "Currency",
    addCrypto: "Add Crypto",
     addCurrency: "Add Currency",
     addWantCrypto: "Select the cryptocurrencies you want to add",
