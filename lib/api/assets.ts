@@ -29,8 +29,7 @@ export async function createAsset(data: {
   });
 
   const text = await res.text();
-  console.log("📤 Gönderilen veri:", data);
-  console.log("📥 Backend'den gelen cevap:", text);
+
 
   if (!res.ok) {
     throw new Error("Varlık oluşturulamadı");

@@ -10,8 +10,7 @@ export async function fetchWithAuth(input: RequestInfo, init: RequestInit = {}) 
 
 
   }
-      console.log("Token:", token);
-console.log("İstek:", input);
+
 
   return fetch(input, {
     ...init,

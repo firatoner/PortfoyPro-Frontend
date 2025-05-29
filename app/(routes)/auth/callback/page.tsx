@@ -12,7 +12,10 @@ export default function AuthCallbackPage() {
   useEffect(() => {
     const handleAuthCallback = async () => {
       const { data, error } = await supabase.auth.getSession();
-console.log(data)
+      if (data.session) {
+        router.push("/");
+        return;
+      }
       if (error) {
         console.error("Session alınamadı:", error.message);
         return;

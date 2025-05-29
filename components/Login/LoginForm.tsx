@@ -18,6 +18,7 @@ import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { useLanguage } from "@/context/LanguageContext";
 import { content } from "@/context/language-content";
 import { PiKeyReturnFill } from "react-icons/pi";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -25,6 +26,7 @@ export default function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  const [showPassword, setShowPassword] = useState(false);
   const { language } = useLanguage();
   const t = content[language];
 
@@ -39,8 +41,6 @@ export default function LoginForm() {
       email,
       password,
     });
-    console.log(session?.access_token);
-    console.log(session?.refresh_token);
 
     if (error) {
       setError(`${t.loginFailed}: ${error.message}`);
@@ -73,7 +73,7 @@ export default function LoginForm() {
         <Card className="w-full max-w-[600px] shadow-xl border border-black dark:border-white p-8 sm:p-10 rounded-xl bg-white dark:bg-black transition-colors">
           <Link href="/">
             {" "}
-            <PiKeyReturnFill  size={35}/>
+            <PiKeyReturnFill size={35} />
           </Link>
 
           <CardHeader>
@@ -117,14 +117,23 @@ export default function LoginForm() {
                     {t.forgotPassword}
                   </Link>
                 </div>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="bg-white dark:bg-black text-black dark:text-white border border-black dark:border-white "
-                />
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="bg-white dark:bg-black text-black dark:text-white border border-black dark:border-white pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-black dark:text-white"
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
               </div>
 
               <Button

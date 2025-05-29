@@ -17,7 +17,7 @@ export async function createPortfolio(name: string) {
     body: JSON.stringify({ name }),
   });
   if (!res.ok) throw new Error('Portföy oluşturulamadı');
-  console.log("olusturlaamdi")
+  console.log("olusturlamadi")
   return res.json();
 }
 

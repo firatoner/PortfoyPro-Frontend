@@ -47,7 +47,7 @@ export default function MyPortfoliosPage() {
   const { language } = useLanguage();
   const t = content[language];
   const BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
-  console.log("✅ BASE URL:", BASE);
+
 
   useEffect(() => {
     const load = async () => {

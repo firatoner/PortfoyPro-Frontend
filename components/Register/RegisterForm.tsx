@@ -17,12 +17,14 @@ import { useLanguage } from "@/context/LanguageContext";
 import { content } from "@/context/language-content";
 import Link from "next/link";
 import { PiKeyReturnFill } from "react-icons/pi";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function RegisterForm() {
   const router = useRouter();
   const { language } = useLanguage();
   const t = content[language];
-
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -100,26 +102,59 @@ export default function RegisterForm() {
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="password">{t.password}</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="bg-white dark:bg-black border border-black dark:border-white text-black dark:text-white transition-colors"
-                />
+                <Label
+                  htmlFor="password"
+                  className="text-black dark:text-white"
+                >
+                  {t.password}
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="bg-white dark:bg-black border border-black dark:border-white text-black dark:text-white pr-10 transition-colors"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-black dark:text-white"
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
               </div>
-              <div className="grid gap-2">
-                <Label htmlFor="confirmPassword">{t.passwordConfirm}</Label>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                  className="bg-white dark:bg-black border-black dark:border-white text-black dark:text-white transition-colors"
-                />
+
+              <div className="grid gap-2 mt-4">
+                <Label
+                  htmlFor="confirmPassword"
+                  className="text-black dark:text-white"
+                >
+                  {t.passwordConfirm}
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="confirmPassword"
+                    type={showConfirmPassword ? "text" : "password"}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    className="bg-white dark:bg-black border border-black dark:border-white text-black dark:text-white pr-10 transition-colors"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-black dark:text-white"
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff size={20} />
+                    ) : (
+                      <Eye size={20} />
+                    )}
+                  </button>
+                </div>
               </div>
 
               {error && (

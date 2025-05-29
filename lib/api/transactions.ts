@@ -15,7 +15,7 @@ export async function createTransaction(data: any) {
 
 // Belirli bir asset'e ait işlemleri getir
 export async function getTransactionsByAssetId(assetId: number) {
-  const res = await fetchWithAuth(`/lib/api/services/transactions/asset/${assetId}`);
+  const res = await fetchWithAuth(`/lib/api/transactions/asset/${assetId}`);
   if (!res.ok) throw new Error("İşlemler alınamadı");
   
   const data = await res.json();

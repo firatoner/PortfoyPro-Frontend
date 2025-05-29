@@ -11,7 +11,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { CheckCircle, AlertCircle } from "lucide-react";
+import { CheckCircle, AlertCircle, EyeOff, Eye } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -25,6 +25,8 @@ export default function SettingsPage() {
   const { setTheme, theme } = useTheme();
   const { language, setLanguage } = useLanguage();
   const t = content[language];
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [saving, setSaving] = useState(false);
@@ -143,24 +145,53 @@ export default function SettingsPage() {
         <CardHeader>
           <CardTitle>{t.changepassword}</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-2">
-          <Label htmlFor="newPassword">{t.newPassword}</Label>
-          <Input
-            id="newPassword"
-            type="password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="newPassword" className="text-black dark:text-white">
+              {t.newPassword}
+            </Label>
+            <div className="relative">
+              <Input
+                id="newPassword"
+                type={showNewPassword ? "text" : "password"}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-black dark:text-white"
+              >
+                {showNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+          </div>
 
-          <Label htmlFor="confirmPassword">
-            {t.newPassword} ({t.again})
-          </Label>
-          <Input
-            id="confirmPassword"
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
+          <div className="space-y-2">
+            <Label
+              htmlFor="confirmPassword"
+              className="text-black dark:text-white"
+            >
+              {t.newPassword} ({t.again})
+            </Label>
+            <div className="relative">
+              <Input
+                id="confirmPassword"
+                type={showConfirmPassword ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-black dark:text-white"
+              >
+                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+          </div>
 
           <Button onClick={handleChangePassword} disabled={saving}>
             {t.change}

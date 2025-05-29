@@ -11,6 +11,7 @@ import { PortfolioCombobox } from "@/components/dashboard/portfolio/portfolio-co
 import { useLanguage } from "@/context/LanguageContext";
 import { content } from "@/context/language-content";
 import LineChart from "@/components/dashboard/portfolio/LineChart";
+import PerformanceChart from "@/components/dashboard/portfolio/PerformanceChart";
 
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
@@ -131,7 +132,7 @@ export default function DashboardPage() {
       </div>
       {/* 3. Kutu: Alt bölüm */}
       <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min">
-        <LineChart />
+       <LineChart/>
       </div>
     </>
   );

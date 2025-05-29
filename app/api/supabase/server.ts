@@ -1,6 +1,10 @@
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+// app/api/supabase/server.ts
 import { cookies } from "next/headers";
+import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 
 export function createClient() {
-  return createServerComponentClient({ cookies });
+  // cookies()’ı sync kullanmayıp, direkt createServerActionClient’a veriyoruz
+  return createServerActionClient({
+    cookies,              // burada fonksiyonu değil, objeyi veriyoruz
+  });
 }

@@ -27,7 +27,7 @@ const fakeData = [
 export default function LineChart() {
   return (
     <div className="h-[400px] bg-white rounded-lg p-4 shadow">
-      <h2 className="text-lg font-semibold mb-4">Sahte Portföy Performansı</h2>
+      <h2 className="text-lg font-semibold mb-4"> Portföy Performansı</h2>
       <div className="h-full">
         <ResponsiveLine
           data={fakeData}
